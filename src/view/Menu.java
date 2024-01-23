@@ -1,6 +1,7 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -17,7 +18,7 @@ public abstract class Menu<T> {
     public Menu(String title, T[] mchon){
         this.title = title;
         choices= new ArrayList<>();
-        for(T m:mchon) choices.add(m);
+        choices.addAll(Arrays.asList(mchon));
     }
 
     public String getTitle() {
