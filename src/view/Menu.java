@@ -17,7 +17,6 @@ public abstract class Menu<T> {
 
     public Menu(String title, T[] mchon){
         this.title = title;
-        choices= new ArrayList<>();
         choices.addAll(Arrays.asList(mchon));
     }
 
@@ -40,15 +39,14 @@ public abstract class Menu<T> {
     public void display(){
         System.out.println(title);
         System.out.println("-------------------");
-        for(int i=0; i<choices.size();i++){
-            System.out.println((i+1)+". "+choices.get(i));
+        for (int i = 0; i < choices.size(); i++){
+            System.out.println((i+1) + ". " + choices.get(i));
         }
         System.out.println("-------------------");
     }
 //----------------------------------------------------
     public int getSelected(){
-        display();
-        Scanner sc= new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         System.out.print("Enter your choice: ");
         return sc.nextInt();
     }    
@@ -56,11 +54,18 @@ public abstract class Menu<T> {
     public abstract void execute(int ch);
 //----------------------------------------------------
     public void run(){
-        while(true){
-            int ch=getSelected();
-            if(ch<=choices.size()) execute(ch);
-            else break;
-        }
+        while (true) {
+            display();
+            int choice = getSelected();
+            
+            if (choice <= 0 || choice > choices.size()) {
+                System.out.println("Invalid choice!!!");
+            }
+            execute(choice);
+            if (choice == choices.size()) {
+                break;
+            }
+        } 
     }    
 //----------------------------------------------------    
 }
