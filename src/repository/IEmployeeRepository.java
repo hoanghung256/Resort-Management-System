@@ -1,13 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package repository;
+
+import java.util.ArrayList;
+import model.Employee;
 
 /**
  *
- * @author hoang
+ * @author hoang hung
  */
-public interface IEmployeeRepository {
+public interface IEmployeeRepository extends Repository<Employee> {
+    @Override
+    public Employee findById(String id);
     
+    @Override
+    public void display(ArrayList<Employee> employees);
+
+    @Override
+    public void update(Employee e);
+
+    @Override
+    public void add(Employee e);
 }

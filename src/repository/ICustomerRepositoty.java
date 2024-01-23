@@ -1,13 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package repository;
+
+import java.util.ArrayList;
+import model.Customer;
 
 /**
  *
- * @author hoang
+ * @author hoang hung
  */
-public interface ICustomerRepositoty {
+public interface ICustomerRepositoty extends Repository<Customer> {
+    @Override
+    public Customer findById(String id);
     
+    @Override
+    public void display(ArrayList<Customer> customers);
+
+    @Override
+    public void update(Customer c);
+
+    @Override
+    public void add(Customer c);
 }

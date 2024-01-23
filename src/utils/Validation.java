@@ -1,9 +1,9 @@
-package model;
+package utils;
 
 /**
  *
  * @author hoang hung
  */
-public class Customer {
+public class Validation {
     
 }

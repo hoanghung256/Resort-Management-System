@@ -1,13 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package service;
+
+import model.Customer;
 
 /**
  *
- * @author hoang
+ * @author hoang hung
  */
-public interface ICustomerService {
+public interface ICustomerService extends Service<Customer> {
+    @Override
+    public void findById(String id);
     
+    @Override
+    public void update(Customer entity);
+
+    @Override
+    public void add(Customer entity);
+
+    @Override
+    public void display();
 }

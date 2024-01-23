@@ -1,5 +1,6 @@
 package controller;
 
+import service.*;
 import view.Menu;
 
 /**
@@ -7,8 +8,8 @@ import view.Menu;
  * @author hoang hung
  */
 public class FuramaController extends Menu<String> {
-    private static String MENU_TITLE = "FURAMA RESORT MANAGEMENT";
-    private static String[] MENU_OPTIONS = {"Employee Management", "Customer Management", "Facility Management", "Booking Management", "Promotion Management", "Exit"};
+    private static final String MENU_TITLE = "FURAMA RESORT MANAGEMENT";
+    private static final String[] MENU_OPTIONS = {"Employee Management", "Customer Management", "Facility Management", "Booking Management", "Promotion Management", "Exit"};
     private Menu<String> employeeManagementMenu;
     private Menu<String> customerManagementMenu;
 
@@ -23,7 +24,7 @@ public class FuramaController extends Menu<String> {
                 runEmployeeManagementMenu();
                 break;
             case 2:
-                runCustomerManagementMenuMenu();
+                runCustomerManagementMenu();
                 break;
             case 3:
                 // Call Facility Management menu
@@ -36,6 +37,7 @@ public class FuramaController extends Menu<String> {
                 break;
             case 6:
                 // Save all data into files
+                System.out.println("gudbye");
                 System.exit(0);
                 break;    
         }
@@ -44,6 +46,7 @@ public class FuramaController extends Menu<String> {
     private void runEmployeeManagementMenu() {
         String title = "EMPLOYEE MANAGEMENT";
         String[] options = {"Display employees list", "Add new employee", "Edit employee information", "Return main menu"};
+//        EmployeeService employeeService = new EmployeeService();
         
         employeeManagementMenu = new Menu<String>(title, options) {
             @Override
@@ -58,12 +61,6 @@ public class FuramaController extends Menu<String> {
                     case 3:
                         
                         break;
-                    case 4:
-                        
-                        break;
-                    case 5:
-                        // Return main menu
-                        break;
                 }
             }
         };
@@ -71,10 +68,10 @@ public class FuramaController extends Menu<String> {
         employeeManagementMenu.run();
     }
     
-    private void runCustomerManagementMenuMenu() {
+    private void runCustomerManagementMenu() {
         String title = "CUSTOMER MANAGEMENT";
         String[] options = {"Display customers list", "Add new customer", "Edit customer information", "Return main menu"};
-        
+//        CustomerService customerService = new CustomerService();
         customerManagementMenu = new Menu<String>(title, options) {
             @Override
             public void execute(int choice) {
@@ -88,14 +85,10 @@ public class FuramaController extends Menu<String> {
                     case 3:
                         
                         break;
-                    case 4:
-                        
-                        break;
-                    case 5:
-                        // Return main menu
-                        break;
                 }
             }
+            
+            
         };
         
         customerManagementMenu.run();

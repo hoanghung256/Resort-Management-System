@@ -1,13 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package repository;
+
+import java.util.ArrayList;
 
 /**
  *
- * @author hoang
+ * @author hoang hung
  */
-public interface Repository {
+public interface Repository<T> {
+    public T findById(String id);
     
+    public void add(T entity);
+    
+    public void update(T entity);
+    
+    public void display(ArrayList<T> entities);
 }

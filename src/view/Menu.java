@@ -17,6 +17,7 @@ public abstract class Menu<T> {
 
     public Menu(String title, T[] mchon){
         this.title = title;
+        choices = new ArrayList<>();
         choices.addAll(Arrays.asList(mchon));
     }
 
