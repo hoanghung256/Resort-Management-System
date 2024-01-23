@@ -37,7 +37,7 @@ public class FuramaController extends Menu<String> {
                 break;
             case 6:
                 // Save all data into files
-                System.out.println("gudbye");
+                System.out.println("Goodbye!");
                 System.exit(0);
                 break;    
         }
@@ -72,6 +72,7 @@ public class FuramaController extends Menu<String> {
         String title = "CUSTOMER MANAGEMENT";
         String[] options = {"Display customers list", "Add new customer", "Edit customer information", "Return main menu"};
 //        CustomerService customerService = new CustomerService();
+
         customerManagementMenu = new Menu<String>(title, options) {
             @Override
             public void execute(int choice) {

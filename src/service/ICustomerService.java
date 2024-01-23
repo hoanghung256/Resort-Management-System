@@ -11,11 +11,11 @@ public interface ICustomerService extends Service<Customer> {
     public void findById(String id);
     
     @Override
-    public void update(Customer entity);
-
-    @Override
-    public void add(Customer entity);
-
-    @Override
     public void display();
+    
+    @Override
+    public void add(Customer c);
+    
+    @Override
+    public void update(Customer c);
 }

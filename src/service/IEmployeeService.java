@@ -1,6 +1,5 @@
 package service;
 
-import model.Customer;
 import model.Employee;
 
 /**
@@ -12,11 +11,13 @@ public interface IEmployeeService extends Service<Employee> {
     public void findById(String id);
     
     @Override
-    public void update(Employee entity);
-
-    @Override
-    public void add(Employee entity);
-
-    @Override
     public void display();
+    
+    @Override
+    public void add(Employee e);
+
+    @Override
+    public void update(Employee e);
+
+    
 }

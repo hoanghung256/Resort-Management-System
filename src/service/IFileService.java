@@ -10,9 +10,9 @@ import model.*;
 public interface IFileService {
     public ArrayList<Employee> readEmployeesFromFile();
     
-    public ArrayList<Customer> readCustomersFromFile();
-    
     public void saveEmployeesIntoFile(ArrayList<Employee> employees);
+    
+    public ArrayList<Customer> readCustomersFromFile();
     
     public void saveCustomersIntoFile(ArrayList<Employee> customers);
 }
