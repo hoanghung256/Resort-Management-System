@@ -21,8 +21,8 @@ public interface IValidation {
     // Define regex for phone number have 10 digits and start with 0
     static final String PHONE_REGEX = "^0\\d{9}$";
     // Define date format for DATE
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    //use try catch to format date. Ex: LocalDate validDate = LocalDate.parse(DateStr, formatter);
+    static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    //use try catch to format date. Ex: LocalDate validDate = LocalDate.parse(DateStr, dateFormatter);
     
     public String getString(String msg);
     
