@@ -9,7 +9,6 @@ import java.util.Date;
 public class Validation implements IValidation{
     @Override
     public String getString(String msg) {
-        return null;
     }
 
     @Override
