@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -53,8 +54,16 @@ public class Employee extends Person{
         return true;
     }
 
+    public String toStringWriteInFile(){
+        String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(super.getDateOfBirth());
+        String gender = (super.isGender() == true)? "Male" : "Female";
+        return super.getID() + "," + super.getFullName() + "," + dateOfBirth + ","+ gender +","+super.getIdentity()+","+super.getPhoneNumber()+","+super.getEmail()+","+ level+","+position+","+salary;
+    }
+
     @Override
     public String toString() {
-        return "Employee{" + "level=" + level + ", position=" + position + ", salary=" + salary + '}';
+        String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(super.getDateOfBirth());
+        String gender = (super.isGender() == true)? "Male" : "Female";
+        return "Employee{" + super.getID() + " "+ dateOfBirth +" "+gender+ "level=" + level + ", position=" + position + ", salary=" + salary + '}';
     }
 }

@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -9,19 +10,17 @@ import java.util.Objects;
  */
 public class Customer extends Person {
     private String level;
-    private Service service;
-    private Booking booking;
+    // private Service service;
+    // private Booking booking;
     private String address;
     
     Customer(){
         
     }
 
-    public Customer(String ID, String fullName, Date dateOfBirth, String identity, boolean gender, String phoneNumber, String email, String level, Service service, Booking booking, String address) {
+    public Customer(String ID, String fullName, Date dateOfBirth, String identity, boolean gender, String phoneNumber, String email, String level, String address) {
         super(ID, fullName, dateOfBirth, identity, gender, phoneNumber, email);
         this.level = level;
-        this.service = service;
-        this.booking = booking;
         this.address = address;
     }
 
@@ -33,21 +32,21 @@ public class Customer extends Person {
         this.level = level;
     }
 
-    public Service getService() {
-        return service;
-    }
+    // public Service getService() {
+    //     return service;
+    // }
 
-    public void setService(Service service) {
-        this.service = service;
-    }
+    // public void setService(Service service) {
+    //     this.service = service;
+    // }
 
-    public Booking getBooking() {
-        return booking;
-    }
+    // public Booking getBooking() {
+    //     return booking;
+    // }
 
-    public void setBooking(Booking booking) {
-        this.booking = booking;
-    }
+    // public void setBooking(Booking booking) {
+    //     this.booking = booking;
+    // }
 
     public String getAddress() {
         return address;
@@ -61,8 +60,8 @@ public class Customer extends Person {
     public int hashCode() {
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.level);
-        hash = 79 * hash + Objects.hashCode(this.service);
-        hash = 79 * hash + Objects.hashCode(this.booking);
+        // hash = 79 * hash + Objects.hashCode(this.service);
+        // hash = 79 * hash + Objects.hashCode(this.booking);
         hash = 79 * hash + Objects.hashCode(this.address);
         return hash;
     }
@@ -79,20 +78,28 @@ public class Customer extends Person {
         if (!Objects.equals(this.level, other.level)) {
             return false;
         }
-        if (!Objects.equals(this.service, other.service)) {
-            return false;
-        }
-        if (!Objects.equals(this.booking, other.booking)) {
-            return false;
-        }
+        // if (!Objects.equals(this.service, other.service)) {
+        //     return false;
+        // }
+        // if (!Objects.equals(this.booking, other.booking)) {
+        //     return false;
+        // }
         if (!Objects.equals(this.address, other.address)) {
             return false;
         }
         return true;
     }
-
+    public String toStringWriteInFile(){
+        String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(super.getDateOfBirth());
+        String gender = (super.isGender() == true)? "Male" : "Female";
+        return super.getID() + "," + super.getFullName() + "," + dateOfBirth + ","+ gender +","+super.getIdentity()+","+super.getPhoneNumber()+","+super.getEmail()+","+ level+","+address;
+    }
+    
     @Override
     public String toString() {
-        return "Customer{" + "level=" + level + ", service=" + service + ", booking=" + booking + ", address=" + address + '}';
+        String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(super.getDateOfBirth());
+        String gender = (super.isGender() == true)? "Male" : "Female";
+        return "Customer{" +" "+ super.getID() +" " + gender + dateOfBirth + "level=" + level + ", address=" + address + '}';
     }
+    
 }
