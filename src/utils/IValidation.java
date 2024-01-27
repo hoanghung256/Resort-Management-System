@@ -1,8 +1,8 @@
 package utils;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 /**
  *
@@ -37,5 +37,6 @@ public interface IValidation {
     public double getAndValidSalary(String msg);
     
     public String getAndValidPhone(String msg);
-    public Date getAndValidDate(String msg);
+    
+    public LocalDate getAndValidDate(String msg);
 }
