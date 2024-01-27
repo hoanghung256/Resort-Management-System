@@ -16,4 +16,28 @@ public class EmployeeRepository implements IEmployeeRepository {
         fileService = new FileService();
 //        employees = fileService.readEmployeesFromFile();
     }
+
+    @Override
+    public Employee findById(String id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+    }
+
+    @Override
+    public void display(ArrayList<Employee> employees) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'display'");
+    }
+
+    @Override
+    public void update(Employee e) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
+    @Override
+    public void add(Employee e) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'add'");
+    }
 }

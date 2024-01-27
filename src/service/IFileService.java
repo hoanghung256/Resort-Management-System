@@ -14,5 +14,5 @@ public interface IFileService {
     
     public ArrayList<Customer> readCustomersFromFile();
     
-    public void saveCustomersIntoFile(ArrayList<Employee> customers);
+    public void saveCustomersIntoFile(ArrayList<Customer> customers);
 }
