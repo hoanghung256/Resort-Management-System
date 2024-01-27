@@ -1,5 +1,6 @@
 package repository;
 
+import java.io.File;
 import java.util.ArrayList;
 import model.Employee;
 
@@ -8,15 +9,12 @@ import model.Employee;
  * @author hoang hung
  */
 public interface IEmployeeRepository extends Repository<Employee> {
-    @Override
-    public Employee findById(String id);
-    
-    @Override
-    public void display(ArrayList<Employee> employees);
+    final String path = new File("src").getAbsolutePath();
+    final String employeesPath = "\\data\\employee.csv";
 
     @Override
-    public void update(Employee e);
+    public ArrayList<Employee> readFile();
 
-    @Override
-    public void add(Employee e);
+    @Override 
+    public void writeFile(ArrayList<Employee> employees);
 }

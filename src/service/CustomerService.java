@@ -1,21 +1,25 @@
 package service;
 
+import java.util.ArrayList;
+
 import model.Customer;
-import repository.CustomerRepository;
+import repository.ICustomerRepository;
 
 /**
  *
  * @author hoang hung
  */
 public class CustomerService implements ICustomerService {
-    private CustomerRepository customerRepo;
+    private ICustomerRepository customerRepo;
+    private ArrayList<Customer> customers;
 
-    public CustomerService() {
-        customerRepo = new CustomerRepository();
+    public CustomerService(ICustomerRepository customerRepo) {
+        this.customerRepo = customerRepo;
+        customers = customerRepo.readFile();
     }
 
     @Override
-    public void findById(String id) {
+    public Customer findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
@@ -38,4 +42,8 @@ public class CustomerService implements ICustomerService {
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
+    @Override
+    public void save() {
+        customerRepo.writeFile(customers);
+    }
 }

@@ -166,6 +166,4 @@ public class Validation implements IValidation {
             System.out.println("You are not eligible. Age: " + age);
         }
     }
-
-
 }

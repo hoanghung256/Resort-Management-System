@@ -8,7 +8,7 @@ import model.Employee;
  */
 public interface IEmployeeService extends Service<Employee> {
     @Override
-    public void findById(String id);
+    public Employee findById(String id);
     
     @Override
     public void display();
@@ -19,5 +19,6 @@ public interface IEmployeeService extends Service<Employee> {
     @Override
     public void update(Employee e);
 
-    
+    @Override
+    public void save();
 }

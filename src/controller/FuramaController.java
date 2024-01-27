@@ -1,5 +1,9 @@
 package controller;
 
+import repository.CustomerRepository;
+import repository.EmployeeRepository;
+import repository.ICustomerRepository;
+import repository.IEmployeeRepository;
 import service.*;
 import view.Menu;
 
@@ -36,7 +40,6 @@ public class FuramaController extends Menu<String> {
                 // Call Promotion Management menu
                 break;
             case 6:
-                // Save all data into files
                 System.out.println("Goodbye!");
                 System.exit(0);
                 break;    
@@ -46,7 +49,8 @@ public class FuramaController extends Menu<String> {
     private void runEmployeeManagementMenu() {
         String title = "EMPLOYEE MANAGEMENT";
         String[] options = {"Display employees list", "Add new employee", "Edit employee information", "Return main menu"};
-//        EmployeeService employeeService = new EmployeeService();
+        IEmployeeRepository employeeRepo = new EmployeeRepository();
+        EmployeeService employeeService = new EmployeeService(employeeRepo);
         
         employeeManagementMenu = new Menu<String>(title, options) {
             @Override
@@ -61,6 +65,9 @@ public class FuramaController extends Menu<String> {
                     case 3:
                         
                         break;
+                    case 4:
+                        employeeService.save();
+                        break;    
                 }
             }
         };
@@ -71,7 +78,8 @@ public class FuramaController extends Menu<String> {
     private void runCustomerManagementMenu() {
         String title = "CUSTOMER MANAGEMENT";
         String[] options = {"Display customers list", "Add new customer", "Edit customer information", "Return main menu"};
-//        CustomerService customerService = new CustomerService();
+        ICustomerRepository customerRepo = new CustomerRepository();
+        CustomerService customerService = new CustomerService(customerRepo);
 
         customerManagementMenu = new Menu<String>(title, options) {
             @Override
@@ -86,10 +94,11 @@ public class FuramaController extends Menu<String> {
                     case 3:
                         
                         break;
+                    case 4:
+                        customerService.save();
+                        break;    
                 }
             }
-            
-            
         };
         
         customerManagementMenu.run();

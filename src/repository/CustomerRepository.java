@@ -1,44 +1,52 @@
 package repository;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import model.Customer;
-import service.FileService;
 
 /**
  *
  * @author hoang hung
  */
-public class CustomerRepository implements ICustomerRepositoty {
-    private FileService fileService;
-    private ArrayList<Customer> customers;
-
+public class CustomerRepository implements ICustomerRepository {
     public CustomerRepository() {
-        fileService = new FileService();
-//        customers = fileService.readCustomersFromFile();
     }
 
     @Override
-    public Customer findById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+    public ArrayList<Customer> readFile() {
+        String line;
+        try{
+            BufferedReader input = new BufferedReader(new FileReader(path + customersPath));
+            ArrayList<Customer> cusList = new ArrayList<>();
+            while((line = input.readLine())!= null){
+                String[] tokString = line.split(",");
+                Date dayOfBirth = new SimpleDateFormat("dd/MM/yyyy").parse(tokString[2]);
+                boolean gender = tokString[3].equals("Male")? true : false;
+                Customer customer = new Customer(tokString[0], tokString[1], dayOfBirth, tokString[4], gender, tokString[5], tokString[6], tokString[7],tokString[8]);
+                cusList.add(customer);
+            }
+            return cusList;
+        }catch (Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 
     @Override
-    public void display(ArrayList<Customer> customers) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'display'");
+    public void writeFile(ArrayList<Customer> customers) {
+        try {
+            PrintWriter w = new PrintWriter(path + customersPath);
+            for (Customer cus: customers){
+                w.println(cus.toStringWriteInFile());
+            }   
+            w.close();
+        } catch (Exception e) {
+            e.getMessage();
+        }
     }
-
-    @Override
-    public void update(Customer c) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void add(Customer c) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
-    }
-    
 }
