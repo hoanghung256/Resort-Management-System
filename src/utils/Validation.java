@@ -1,48 +1,171 @@
 package utils;
 
-import java.util.Date;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
-/**
- *
- * @author hoang hung
- */
-public class Validation implements IValidation{
+public class Validation implements IValidation {
+
+    static Scanner sc = new Scanner(System.in);
+
     @Override
     public String getString(String msg) {
+        System.out.print(msg);
+        return sc.nextLine();
     }
-
-    @Override
-    public String getAndValidEmpId(String msg) {
-        return null;
+    
+    public String getAndValidValue(String msg, String regex, String cause) {
+        String value;
+        while (true) {
+            try {
+                value = getString(msg);
+                if (value.isEmpty()) {
+                    throw new Exception("Input can not empty");
+                }
+                if (!value.matches(regex)) {
+                    throw new Exception(cause);
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return value;
     }
-
-    @Override
-    public String getAndValidCusId(String msg) {
-        return null;
-    }
-
+    // input name
     @Override
     public String getAndValidPersonName(String msg) {
-        return null;
+        String personName;
+        do {
+            try {
+                personName = getAndValidValue(msg, NAME_REGEX, "Invalid person name. Please enter a valid name.");
+                return personName;
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } while (true);
     }
 
+    // input customer id
+    @Override
+    public String getAndValidEmpId(String msg) {
+        String empID;
+        do {
+            try {
+                empID = getAndValidValue(msg, EMPID_REGEX, "Invalid employee ID. Please enter a valid employee ID.");
+                return empID;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } while (true);
+    }
+
+    // input customer id
+    @Override
+    public String getAndValidCusId(String msg) {
+        String cusID;
+        do {
+            try {
+                cusID = getAndValidValue(msg, CUSID_REGEX, "Invalid customer ID. Please enter a valid customer ID.");
+                return cusID;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } while (true);
+    }
+
+    //input identifycation number
     @Override
     public String getAndValidIdentificationNum(String msg) {
-        return null;
+        String identification;
+        do {
+            try {
+                identification = getAndValidValue(msg, IDENTIFICATION_REGEX, "Invalid identification number. Please enter a valid identification number.");
+                return identification;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } while (true);
     }
 
+    //input salary
     @Override
     public double getAndValidSalary(String msg) {
-        return 0;
+        String salary;
+        do {
+            try {
+                salary = getAndValidValue(msg, "[\\d.]+", "Invalid amount of money");
+
+                if (Double.parseDouble(salary) <= 0) {
+                    throw new Exception("Amount of money must a positive number");
+                }
+
+                return Double.parseDouble(salary);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid amount of money");
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        } while (true);
     }
 
+    //input phone
     @Override
     public String getAndValidPhone(String msg) {
-        return null;
+        String phoneNumber;
+        do {
+            try {
+                phoneNumber = getAndValidValue(msg, PHONE_REGEX, "Invalid phone number. Please enter a valid phone number.");
+                return phoneNumber;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } while (true);
     }
 
+    //input date
     @Override
-    public Date getAndValidDate(String msg) {
-        return null;
+    public LocalDate getAndValidDate(String msg) {
+        LocalDate dob;
+        do {
+            try {
+                String dobString = getAndValidValue(msg, "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$", "Invalid date. Please enter a valid date.");
+                dob = LocalDate.parse(dobString, formatter);
+                validateDateOfBirth(dob);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                dob = null;
+            }
+        } while (dob == null);
+        return dob;
     }
+
+    //check input Date
+    public void validateDateOfBirth(LocalDate dob) throws Exception {
+        try {
+            dob.format(formatter);
+        } catch (DateTimeException ex) {
+            throw new Exception("Invalid date. Please enter a valid date.");
+        }
+    }
+
+    //check eligible age
+    public void calculateAge(LocalDate birthDate) {
+        LocalDate currentDate = LocalDate.now();
+
+        int age = currentDate.getYear() - birthDate.getYear();
+
+        if (currentDate.getMonthValue() < birthDate.getMonthValue() || (currentDate.getMonthValue() == birthDate.getMonthValue() && currentDate.getDayOfMonth() < birthDate.getDayOfMonth())) {
+            age--;
+        }
+        if (age >= 18) {
+            System.out.println("You are eligible. Age: " + age);
+        } else {
+            System.out.println("You are not eligible. Age: " + age);
+        }
+    }
+
+
 }
