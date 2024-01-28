@@ -37,7 +37,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public void update(Customer c) {
+    public void update() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }

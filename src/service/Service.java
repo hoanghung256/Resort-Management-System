@@ -11,7 +11,7 @@ public interface Service<T> {
     
     public void add(T entity);
     
-    public void update(T entity);
+    public void update();
 
     public void save();
 }

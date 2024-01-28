@@ -17,7 +17,7 @@ public interface IEmployeeService extends Service<Employee> {
     public void add(Employee e);
 
     @Override
-    public void update(Employee e);
+    public void update();
 
     @Override
     public void save();
