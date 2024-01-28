@@ -38,8 +38,7 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public void update() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        // Use switch case to know which attribute user want to change
     }
 
     @Override

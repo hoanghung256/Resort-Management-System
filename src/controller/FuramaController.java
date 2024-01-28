@@ -63,7 +63,7 @@ public class FuramaController extends Menu<String> {
                         
                         break;
                     case 3:
-                        
+                        // Use findById() to know which person user want to edit then call update()
                         break;
                     case 4:
                         employeeService.save();
@@ -92,7 +92,7 @@ public class FuramaController extends Menu<String> {
                         
                         break;
                     case 3:
-                        
+                        // Use findById() to know which person user want to edit then call update()
                         break;
                     case 4:
                         customerService.save();
