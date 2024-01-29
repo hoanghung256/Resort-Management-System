@@ -1,10 +1,15 @@
 package controller;
 
+import java.time.LocalDate;
+import java.util.Date;
+
+import model.Employee;
 import repository.CustomerRepository;
 import repository.EmployeeRepository;
 import repository.ICustomerRepository;
 import repository.IEmployeeRepository;
 import service.*;
+import utils.Validation;
 import view.Menu;
 
 /**
@@ -16,6 +21,7 @@ public class FuramaController extends Menu<String> {
     private static final String[] MENU_OPTIONS = {"Employee Management", "Customer Management", "Facility Management", "Booking Management", "Promotion Management", "Exit"};
     private Menu<String> employeeManagementMenu;
     private Menu<String> customerManagementMenu;
+    static Validation validation = new Validation();
 
     public FuramaController() {
         super(MENU_TITLE, MENU_OPTIONS);
@@ -57,16 +63,29 @@ public class FuramaController extends Menu<String> {
             public void execute(int choice) {
                 switch (choice) {
                     case 1:
-                        
+                        employeeService.display();
                         break;
                     case 2:
-                        
+                        String id = validation.getAndValidEmpId("Enter new employee ID: ");
+                        String name = validation.getAndValidPersonName("Enter new employee's Name: ");
+                        String gender = validation.getAndValidValue("Enter employee's gender: ", "M|F", "Invalid gender! Please input again!");
+                        boolean genderEmployee = gender.equals("M")? true : false;
+                        LocalDate date = validation.getAndValidDate("Enter employee's date of birth: ");
+                        Date dateOfBirth = java.sql.Date.valueOf(date);
+                        String identity = validation.getAndValidIdentificationNum("Enter employee's identification number: ");
+                        String phoneNumber = validation.getAndValidPhone("Enter employee's phone number: ");
+                        String email = validation.getAndValidValue("Enter employee's email: ", "^(.+)@(\\S+)$", "Invalid email. Please enter email again!");
+                        String level = validation.getString("Enter employee's level: ");
+                        String position = validation.getString("Enter employee's position: ");
+                        Double salary = validation.getAndValidSalary("Enter employee's salary: ");
+                        Employee e = new Employee(id, name, dateOfBirth, identity, genderEmployee, phoneNumber, email, level, position, salary);
+                        employeeService.add(e);
                         break;
                     case 3:
                         // Use findById() to know which person user want to edit then call update()
                         break;
                     case 4:
-                        employeeService.save();
+                        // employeeService.save();
                         break;    
                 }
             }

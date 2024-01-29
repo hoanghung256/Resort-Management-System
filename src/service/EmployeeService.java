@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.Employee;
 import repository.IEmployeeRepository;
+import utils.Validation;
 
 /**
  *
@@ -12,6 +13,7 @@ import repository.IEmployeeRepository;
 public class EmployeeService implements IEmployeeService {
     private IEmployeeRepository employeeRepo;
     private ArrayList<Employee> employees;
+    static Validation validation = new Validation();
 
     public EmployeeService(IEmployeeRepository employeeRepo) {
         this.employeeRepo = employeeRepo;
@@ -27,13 +29,14 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public void display() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'display'");
+        employees.forEach(System.out::println);
     }
 
     @Override
     public void add(Employee e) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
+        employees.add(e);
+        
     }
 
     @Override
