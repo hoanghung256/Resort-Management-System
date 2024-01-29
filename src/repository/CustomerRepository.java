@@ -20,6 +20,7 @@ public class CustomerRepository implements ICustomerRepository {
     @Override
     public ArrayList<Customer> readFile() {
         String line;
+        System.out.println(path+customersPath);
         try{
             BufferedReader input = new BufferedReader(new FileReader(path + customersPath));
             ArrayList<Customer> cusList = new ArrayList<>();
@@ -27,8 +28,11 @@ public class CustomerRepository implements ICustomerRepository {
                 String[] tokString = line.split(",");
                 Date dayOfBirth = new SimpleDateFormat("dd/MM/yyyy").parse(tokString[2]);
                 boolean gender = tokString[3].equals("Male")? true : false;
+                System.out.println("123");
                 Customer customer = new Customer(tokString[0], tokString[1], dayOfBirth, tokString[4], gender, tokString[5], tokString[6], tokString[7],tokString[8]);
+                System.out.println("123");
                 cusList.add(customer);
+                System.out.println(customer.toString());
             }
             return cusList;
         }catch (Exception e){

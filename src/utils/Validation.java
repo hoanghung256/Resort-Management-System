@@ -149,6 +149,10 @@ public class Validation implements IValidation {
         } catch (DateTimeException ex) {
             throw new Exception("Invalid date. Please enter a valid date.");
         }
+
+        if (dob.isAfter(LocalDate.now())) {
+            throw new Exception("Date of birth cannot be in the future. Please enter a valid date.");
+        }
     }
 
     //check eligible age

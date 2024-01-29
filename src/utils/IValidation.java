@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  *
- * @author hoang hung
+ * @author hoang hung"^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$"
  */
 public interface IValidation {
     // Define regex for employee ID format: EMP-YYYY (YYYY is digit from 0-9)

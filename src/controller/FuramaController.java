@@ -1,9 +1,17 @@
 package controller;
 
 import java.time.LocalDate;
+<<<<<<< HEAD
 import java.util.Date;
 
 import model.Employee;
+=======
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.Scanner;
+
+import model.Customer;
+>>>>>>> 0d8af81 (Updated Customer add)
 import repository.CustomerRepository;
 import repository.EmployeeRepository;
 import repository.ICustomerRepository;
@@ -21,7 +29,11 @@ public class FuramaController extends Menu<String> {
     private static final String[] MENU_OPTIONS = {"Employee Management", "Customer Management", "Facility Management", "Booking Management", "Promotion Management", "Exit"};
     private Menu<String> employeeManagementMenu;
     private Menu<String> customerManagementMenu;
+<<<<<<< HEAD
     static Validation validation = new Validation();
+=======
+    private Validation validation = new Validation();
+>>>>>>> 0d8af81 (Updated Customer add)
 
     public FuramaController() {
         super(MENU_TITLE, MENU_OPTIONS);
@@ -108,7 +120,19 @@ public class FuramaController extends Menu<String> {
                         
                         break;
                     case 2:
-                        
+                        String id = validation.getAndValidCusId("Enter customer ID: ");
+                        String fullName = validation.getAndValidPersonName("Enter customer's name: ");
+                        LocalDate date = validation.getAndValidDate("Enter date of birth: ");
+                        Date dateOfBirth = java.sql.Date.valueOf(date);
+                        String identity = validation.getAndValidIdentificationNum("Enter Identification number: ");
+                        String gen = validation.getAndValidValue("Enter customer's gender (M/F): ", "[MF]", "Gender must be Male or Female!");
+                        boolean gender= gen.equals("M")? true:false;
+                        String phoneNumber = validation.getAndValidPhone("Enter phone number: ");
+                        String email = validation.getAndValidValue("Enter customer email: ", "(.+)@(\\S+)$", "Email must be follow YY..Y@gmail.com");
+                        String level = validation.getString("Enter Customer level: ");
+                        String address = validation.getAndValidValue("Enter Address: ", "^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$", "Address must be upper case first character of each word!");
+                        Customer c = new Customer(id, fullName, dateOfBirth, identity, gender, phoneNumber, email, level, address);
+                        customerService.add(c);
                         break;
                     case 3:
                         // Use findById() to know which person user want to edit then call update()

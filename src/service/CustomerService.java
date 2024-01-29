@@ -1,6 +1,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import model.Customer;
 import repository.ICustomerRepository;
@@ -32,8 +33,7 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public void add(Customer c) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
+        customers.add(c);
     }
 
     @Override
@@ -45,4 +45,6 @@ public class CustomerService implements ICustomerService {
     public void save() {
         customerRepo.writeFile(customers);
     }
+
+    
 }
