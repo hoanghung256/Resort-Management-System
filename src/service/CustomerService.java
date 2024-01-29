@@ -1,15 +1,11 @@
 package service;
 
 import java.util.ArrayList;
-
 import model.Customer;
 import repository.ICustomerRepository;
 
-/**
- *
- * @author hoang hung
- */
 public class CustomerService implements ICustomerService {
+
     private ICustomerRepository customerRepo;
     private ArrayList<Customer> customers;
 
@@ -26,8 +22,13 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public void display() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'display'");
+        if (customers.isEmpty()) {
+            System.out.println("No customer found.");
+        } else {
+            for (Customer st : customers) {
+                System.out.println(st.toString());
+            }
+        }
     }
 
     @Override
