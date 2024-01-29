@@ -17,7 +17,7 @@ public interface ICustomerService extends Service<Customer> {
     public void add(Customer c);
 
     @Override
-    public void update();
+    public void update(Customer c);
 
     @Override
     public void save();

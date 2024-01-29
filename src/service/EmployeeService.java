@@ -37,7 +37,7 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public void update() {
+    public void update(Employee e) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }

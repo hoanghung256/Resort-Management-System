@@ -9,15 +9,15 @@ import model.Employee;
 public interface IEmployeeService extends Service<Employee> {
     @Override
     public Employee findById(String id);
-    
+
     @Override
     public void display();
-    
+
     @Override
     public void add(Employee e);
 
     @Override
-    public void update();
+    public void update(Employee e);
 
     @Override
     public void save();

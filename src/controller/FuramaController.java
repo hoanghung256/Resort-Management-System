@@ -5,6 +5,7 @@ import repository.EmployeeRepository;
 import repository.ICustomerRepository;
 import repository.IEmployeeRepository;
 import service.*;
+import utils.Validation;
 import view.Menu;
 
 /**
@@ -13,14 +14,16 @@ import view.Menu;
  */
 public class FuramaController extends Menu<String> {
     private static final String MENU_TITLE = "FURAMA RESORT MANAGEMENT";
-    private static final String[] MENU_OPTIONS = {"Employee Management", "Customer Management", "Facility Management", "Booking Management", "Promotion Management", "Exit"};
+    private static final String[] MENU_OPTIONS = { "Employee Management", "Customer Management", "Facility Management",
+            "Booking Management", "Promotion Management", "Exit" };
     private Menu<String> employeeManagementMenu;
     private Menu<String> customerManagementMenu;
+    private Validation val = new Validation();
 
     public FuramaController() {
         super(MENU_TITLE, MENU_OPTIONS);
     }
-    
+
     @Override
     public void execute(int choice) {
         switch (choice) {
@@ -42,42 +45,44 @@ public class FuramaController extends Menu<String> {
             case 6:
                 System.out.println("Goodbye!");
                 System.exit(0);
-                break;    
+                break;
         }
     }
-    
+
     private void runEmployeeManagementMenu() {
         String title = "EMPLOYEE MANAGEMENT";
-        String[] options = {"Display employees list", "Add new employee", "Edit employee information", "Return main menu"};
+        String[] options = { "Display employees list", "Add new employee", "Edit employee information",
+                "Return main menu" };
         IEmployeeRepository employeeRepo = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepo);
-        
+
         employeeManagementMenu = new Menu<String>(title, options) {
             @Override
             public void execute(int choice) {
                 switch (choice) {
                     case 1:
-                        
+
                         break;
                     case 2:
-                        
+
                         break;
                     case 3:
                         // Use findById() to know which person user want to edit then call update()
                         break;
                     case 4:
                         employeeService.save();
-                        break;    
+                        break;
                 }
             }
         };
-        
+
         employeeManagementMenu.run();
     }
-    
+
     private void runCustomerManagementMenu() {
         String title = "CUSTOMER MANAGEMENT";
-        String[] options = {"Display customers list", "Add new customer", "Edit customer information", "Return main menu"};
+        String[] options = { "Display customers list", "Add new customer", "Edit customer information",
+                "Return main menu" };
         ICustomerRepository customerRepo = new CustomerRepository();
         CustomerService customerService = new CustomerService(customerRepo);
 
@@ -86,21 +91,22 @@ public class FuramaController extends Menu<String> {
             public void execute(int choice) {
                 switch (choice) {
                     case 1:
-                        
+
                         break;
                     case 2:
-                        
+
                         break;
                     case 3:
-                        // Use findById() to know which person user want to edit then call update()
+                        String id = val.getAndValidCusId("Enter customer ID: ");
+                        customerService.update(customerService.findById(id));
                         break;
                     case 4:
                         customerService.save();
-                        break;    
+                        break;
                 }
             }
         };
-        
+
         customerManagementMenu.run();
     }
 }
