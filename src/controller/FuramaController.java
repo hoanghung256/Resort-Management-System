@@ -5,14 +5,6 @@ import java.util.Date;
 import model.Employee;
 
 import java.time.LocalDate;
-<<<<<<< HEAD
-import java.util.Date;
-
-import model.Employee;
-=======
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.Scanner;
 
 import model.Customer;
 import repository.CustomerRepository;
