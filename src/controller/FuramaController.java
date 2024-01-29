@@ -1,5 +1,9 @@
 package controller;
 
+import java.util.Date;
+
+import model.Employee;
+
 import java.time.LocalDate;
 <<<<<<< HEAD
 import java.util.Date;
@@ -11,7 +15,6 @@ import java.util.Date;
 import java.util.Scanner;
 
 import model.Customer;
->>>>>>> 0d8af81 (Updated Customer add)
 import repository.CustomerRepository;
 import repository.EmployeeRepository;
 import repository.ICustomerRepository;
@@ -29,14 +32,11 @@ public class FuramaController extends Menu<String> {
     private static final String[] MENU_OPTIONS = {"Employee Management", "Customer Management", "Facility Management", "Booking Management", "Promotion Management", "Exit"};
     private Menu<String> employeeManagementMenu;
     private Menu<String> customerManagementMenu;
-<<<<<<< HEAD
-    static Validation validation = new Validation();
-=======
     private Validation validation = new Validation();
->>>>>>> 0d8af81 (Updated Customer add)
 
     public FuramaController() {
         super(MENU_TITLE, MENU_OPTIONS);
+        
     }
     
     @Override
@@ -73,6 +73,7 @@ public class FuramaController extends Menu<String> {
         employeeManagementMenu = new Menu<String>(title, options) {
             @Override
             public void execute(int choice) {
+                Validation validation = new Validation();
                 switch (choice) {
                     case 1:
                         employeeService.display();
