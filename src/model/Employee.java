@@ -24,6 +24,30 @@ public class Employee extends Person{
         this.salary = salary;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -64,6 +88,6 @@ public class Employee extends Person{
     public String toString() {
         String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(super.getDateOfBirth());
         String gender = (super.isGender() == true)? "Male" : "Female";
-        return "Employee{" + super.getID() + " "+ dateOfBirth +" "+gender+ "level=" + level + ", position=" + position + ", salary=" + salary + '}';
+        return super.getID() + ", " + super.getFullName() + ", " + dateOfBirth + ", "+ gender +", "+super.getIdentity()+", "+super.getPhoneNumber()+", "+super.getEmail()+", "+ level+", "+position+", "+salary;
     }
 }

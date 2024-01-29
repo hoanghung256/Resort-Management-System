@@ -5,6 +5,7 @@ import repository.EmployeeRepository;
 import repository.ICustomerRepository;
 import repository.IEmployeeRepository;
 import service.*;
+import utils.Validation;
 import view.Menu;
 
 /**
@@ -16,9 +17,11 @@ public class FuramaController extends Menu<String> {
     private static final String[] MENU_OPTIONS = {"Employee Management", "Customer Management", "Facility Management", "Booking Management", "Promotion Management", "Exit"};
     private Menu<String> employeeManagementMenu;
     private Menu<String> customerManagementMenu;
+    private Validation val;
 
     public FuramaController() {
         super(MENU_TITLE, MENU_OPTIONS);
+        val = new Validation();
     }
     
     @Override
@@ -64,10 +67,12 @@ public class FuramaController extends Menu<String> {
                         break;
                     case 3:
                         // Use findById() to know which person user want to edit then call update()
+                        String id = val.getAndValidEmpId("Enter employer ID: ");
+                        employeeService.update(employeeService.findById(id));
                         break;
                     case 4:
                         employeeService.save();
-                        break;    
+                        return;
                 }
             }
         };
