@@ -46,26 +46,6 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void update(Employee e) {
-        System.out.println("1.Edit specific information\n"
-                + "2.Back");
-        int choice = Integer.parseInt(val.getAndValidValue("Enter your choice: ", "^[12]$", "Invalid choice!"));
-        switch (choice) {
-            case 1:
-                editSpecific(e);
-                break;
-            case 2:
-                return;
-            default:
-                System.out.println("Invalid choice!");
-        }
-    }
-
-    @Override
-    public void save() {
-        employeeRepo.writeFile(employees);
-    }
-
-    private void editSpecific(Employee e) {
         while (true) {
             String[] split = e.toString().split(", ");
             for (int i = 0; i < 10; i++) {
@@ -147,4 +127,10 @@ public class EmployeeService implements IEmployeeService {
             }
         }
     }
+
+    @Override
+    public void save() {
+        employeeRepo.writeFile(employees);
+    }
+
 }
