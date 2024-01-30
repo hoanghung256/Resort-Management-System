@@ -37,7 +37,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public void update() {
+    public void update(Customer c) {
         // Use switch case to know which attribute user want to change
     }
 

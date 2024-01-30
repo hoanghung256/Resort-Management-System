@@ -1,5 +1,6 @@
 package controller;
 
+<<<<<<< HEAD
 import java.util.Date;
 
 import model.Employee;
@@ -7,6 +8,9 @@ import model.Employee;
 import java.time.LocalDate;
 
 import model.Customer;
+=======
+import model.Employee;
+>>>>>>> RM-15
 import repository.CustomerRepository;
 import repository.EmployeeRepository;
 import repository.ICustomerRepository;
@@ -24,11 +28,11 @@ public class FuramaController extends Menu<String> {
     private static final String[] MENU_OPTIONS = {"Employee Management", "Customer Management", "Facility Management", "Booking Management", "Promotion Management", "Exit"};
     private Menu<String> employeeManagementMenu;
     private Menu<String> customerManagementMenu;
-    private Validation validation = new Validation();
+    private Validation val;
 
     public FuramaController() {
         super(MENU_TITLE, MENU_OPTIONS);
-        
+        val = new Validation();
     }
     
     @Override
@@ -88,10 +92,16 @@ public class FuramaController extends Menu<String> {
                         break;
                     case 3:
                         // Use findById() to know which person user want to edit then call update()
+                        Employee e;
+                        do {
+                            String id = val.getAndValidEmpId("Enter employer ID: ");
+                            e = employeeService.findById(id);
+                        } while (e == null);
+                        employeeService.update(e);
                         break;
                     case 4:
                         // employeeService.save();
-                        break;    
+                        return;
                 }
             }
         };
