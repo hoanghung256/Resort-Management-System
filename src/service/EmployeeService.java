@@ -29,13 +29,15 @@ public class EmployeeService implements IEmployeeService {
                 return e;
             }
         }
+        System.out.println("Not found employee!");
         return null;
     }
 
     @Override
     public void display() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'display'");
+        // throw new UnsupportedOperationException("Unimplemented method 'display'");
+        employees.forEach(e -> System.out.println(e.toString()));
     }
 
     @Override

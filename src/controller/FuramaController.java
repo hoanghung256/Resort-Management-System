@@ -1,5 +1,6 @@
 package controller;
 
+import model.Employee;
 import repository.CustomerRepository;
 import repository.EmployeeRepository;
 import repository.ICustomerRepository;
@@ -60,18 +61,22 @@ public class FuramaController extends Menu<String> {
             public void execute(int choice) {
                 switch (choice) {
                     case 1:
-                        
+                        employeeService.display();
                         break;
                     case 2:
                         
                         break;
                     case 3:
                         // Use findById() to know which person user want to edit then call update()
-                        String id = val.getAndValidEmpId("Enter employer ID: ");
-                        employeeService.update(employeeService.findById(id));
+                        Employee e;
+                        do {
+                            String id = val.getAndValidEmpId("Enter employer ID: ");
+                            e = employeeService.findById(id);
+                        } while (e == null);
+                        employeeService.update(e);
                         break;
                     case 4:
-                        employeeService.save();
+                        // employeeService.save();
                         return;
                 }
             }
