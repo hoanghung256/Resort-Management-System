@@ -1,5 +1,6 @@
 package controller;
 
+import model.*;
 import repository.CustomerRepository;
 import repository.EmployeeRepository;
 import repository.ICustomerRepository;
@@ -18,10 +19,11 @@ public class FuramaController extends Menu<String> {
             "Booking Management", "Promotion Management", "Exit" };
     private Menu<String> employeeManagementMenu;
     private Menu<String> customerManagementMenu;
-    private Validation val = new Validation();
+    private Validation val;
 
     public FuramaController() {
         super(MENU_TITLE, MENU_OPTIONS);
+        val  = new Validation();
     }
 
     @Override
@@ -97,8 +99,12 @@ public class FuramaController extends Menu<String> {
 
                         break;
                     case 3:
-                        String id = val.getAndValidCusId("Enter customer ID: ");
-                        customerService.update(customerService.findById(id));
+                        Customer c;
+                        do {
+                        String inputId = val.getAndValidCusId("Enter customer ID: ");
+                            c = customerService.findById(inputId);
+                        } while (c == null);
+                        customerService.update(c);
                         break;
                     case 4:
                         customerService.save();
