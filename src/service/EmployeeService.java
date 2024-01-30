@@ -12,16 +12,9 @@ import utils.Validation;
  * @author hoang hung
  */
 public class EmployeeService implements IEmployeeService {
-<<<<<<< HEAD
     private IEmployeeRepository employeeRepo;
     private ArrayList<Employee> employees;
     static Validation validation = new Validation();
-=======
-
-    private final IEmployeeRepository employeeRepo;
-    private final ArrayList<Employee> employees;
-    private final Validation val = new Validation();
->>>>>>> RM-15
 
     public EmployeeService(IEmployeeRepository employeeRepo) {
         this.employeeRepo = employeeRepo;
@@ -42,12 +35,7 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public void display() {
         // TODO Auto-generated method stub
-<<<<<<< HEAD
         employees.forEach(System.out::println);
-=======
-        // throw new UnsupportedOperationException("Unimplemented method 'display'");
-        employees.forEach(e -> System.out.println(e.toString()));
->>>>>>> RM-15
     }
 
     @Override
