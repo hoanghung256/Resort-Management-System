@@ -6,5 +6,7 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+out/
+
 # Intellij specific folders #
 .idea/
