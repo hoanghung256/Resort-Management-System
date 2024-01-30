@@ -1,5 +1,6 @@
 package service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import model.Customer;
 import repository.ICustomerRepository;
@@ -7,11 +8,15 @@ import repository.ICustomerRepository;
 public class CustomerService implements ICustomerService {
 
     private ICustomerRepository customerRepo;
-    private ArrayList<Customer> customers;
+    static ArrayList<Customer> customers;
 
     public CustomerService(ICustomerRepository customerRepo) {
         this.customerRepo = customerRepo;
         customers = customerRepo.readFile();
+    }
+
+    public CustomerService() {
+
     }
 
     @Override
@@ -25,9 +30,17 @@ public class CustomerService implements ICustomerService {
         if (customers.isEmpty()) {
             System.out.println("No customer found.");
         } else {
+            System.out.println("+-----+--------------+----------+-----------------+--------+--------------+----------------------+----------+----------------------+");
+            System.out.printf("| %-10s | %-20s | %-10s | %-15s | %-6s | %-12s | %-20s | %-10s | %-20s |%n",
+                    "ID", "Full Name", "Birthday", "Identification", "Gender", "Phone number", "Email", "Level", "Address");
+            System.out.println("+-----+--------------+----------+-----------------+--------+--------------+----------------------+----------+----------------------+");
             for (Customer st : customers) {
-                System.out.println(st.toString());
+                String gender = (st.isGender() == true) ? "Male" : "Female";
+                String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(st.getDateOfBirth());
+                System.out.printf("| %-10s | %-20s | %-10s | %-15s | %-5s | %-12s | %-20s | %-10s | %-20s |%n",
+                        st.getID(), st.getFullName(), dateOfBirth, st.getIdentity(), gender, st.getPhoneNumber(), st.getEmail(), st.getLevel(), st.getAddress());
             }
+            System.out.println("+-----+--------------+----------+-----------------+--------+--------------+----------------------+----------+----------------------+");
         }
     }
 
@@ -46,4 +59,5 @@ public class CustomerService implements ICustomerService {
     public void save() {
         customerRepo.writeFile(customers);
     }
+
 }
