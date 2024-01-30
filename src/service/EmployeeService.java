@@ -35,15 +35,25 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void display() {
-        // TODO Auto-generated method stub
-        employees.forEach(System.out::println);
+        System.out.println(
+                "+------------+----------------------+-----------------+-----------------+---------+--------------+---------------------------+-----------------+-----------------+----------+");
+        System.out.println(String.format(
+                "| %-10s | %-20s | %-15s | %-15s | %-7s | %-12s | %-25s | %-15s | %-15s | %-7s$ |", "ID", "Full name",
+                "Date of birth", "Identity number", "Gender", "Phone number", "Email", "Level", "Position", "Salary"));
+        System.out.println(
+                "+------------+----------------------+-----------------+-----------------+---------+--------------+---------------------------+-----------------+-----------------+----------+");
+        for (Employee employee : employees) {
+            System.out.println(employee);
+        }
+        System.out.println(
+                "+------------+----------------------+-----------------+-----------------+---------+--------------+---------------------------+-----------------+-----------------+----------+");
     }
 
     @Override
     public void add(Employee e) {
         // TODO Auto-generated method stub
         employees.add(e);
-        
+
     }
 
     @Override
@@ -51,74 +61,77 @@ public class EmployeeService implements IEmployeeService {
         while (true) {
             String[] split = e.toString().split(", ");
             for (int i = 0; i < 10; i++) {
-                System.out.println((i+1) + ". " + split[i]);
+                System.out.println((i + 1) + ". " + split[i]);
             }
             System.out.println("11. Back");
-            int choice = Integer.parseInt(val.getAndValidValue("Enter your choice: ", "^[1-9]|10|11$", "Invalid choice!"));
-            switch (choice){
+            int choice = Integer
+                    .parseInt(val.getAndValidValue("Enter your choice: ", "^[1-9]|10|11$", "Invalid choice!"));
+            switch (choice) {
                 case 1:
                     System.out.println("ID is fixed. Can not change!");
                     break;
                 case 2:
                     String name = val.getAndValidPersonName("Enter new name:");
                     e.setFullName(name);
-                    if (e.getFullName().equals(name)){
+                    if (e.getFullName().equals(name)) {
                         System.out.println("Successfully change name.");
                     }
                     break;
                 case 3:
                     Date date = java.sql.Date.valueOf(val.getAndValidDate("Enter new date of birth: "));
                     e.setDateOfBirth(date);
-                    if (e.getDateOfBirth().equals(date)){
+                    if (e.getDateOfBirth().equals(date)) {
                         System.out.println("Successfully change date of birth.");
                     }
                     break;
                 case 4:
-                    boolean gender = val.getAndValidValue("Enter gender: ", "^Male|Female$", "Invalid gender!").equals("Male");
+                    boolean gender = val.getAndValidValue("Enter gender: ", "^Male|Female$", "Invalid gender!")
+                            .equals("Male");
                     e.setGender(gender);
-                    if (e.isGender() == gender){
+                    if (e.isGender() == gender) {
                         System.out.println("Successfully change gender.");
                     }
                     break;
                 case 5:
                     String identity = val.getAndValidIdentificationNum("Enter new identification number: ");
                     e.setIdentity(identity);
-                    if (e.getIdentity().equals(identity)){
+                    if (e.getIdentity().equals(identity)) {
                         System.out.println("Successfully change identification.");
                     }
                     break;
                 case 6:
                     String phoneNumber = val.getAndValidPhone("Enter new phone number: ");
                     e.setPhoneNumber(phoneNumber);
-                    if (e.getPhoneNumber().equals(phoneNumber)){
+                    if (e.getPhoneNumber().equals(phoneNumber)) {
                         System.out.println("Successfully change phone number.");
                     }
                     break;
                 case 7:
-                    String email = val.getAndValidValue("Enter new email: ", "^([\\w-\\.]+){1,64}@([\\w&&[^_]]+){2,255}.[a-z]{2,}$", "Invalid email!");
+                    String email = val.getAndValidValue("Enter new email: ",
+                            "^([\\w-\\.]+){1,64}@([\\w&&[^_]]+){2,255}.[a-z]{2,}$", "Invalid email!");
                     e.setEmail(email);
-                    if (e.getEmail().equals(email)){
+                    if (e.getEmail().equals(email)) {
                         System.out.println("Successfully change email.");
                     }
                     break;
                 case 8:
                     String level = val.getAndValidValue("Enter new level: ", ".*", "Invalid level!");
                     e.setLevel(level);
-                    if (e.getLevel().equals(level)){
+                    if (e.getLevel().equals(level)) {
                         System.out.println("Successfully change level");
                     }
                     break;
                 case 9:
                     String position = val.getAndValidValue("Enter new position: ", ".*", "Invalid position!");
                     e.setPosition(position);
-                    if (e.getPosition().equals(position)){
+                    if (e.getPosition().equals(position)) {
                         System.out.println("Successfully change position");
                     }
                     break;
                 case 10:
                     double salary = val.getAndValidSalary("Enter new salary: ");
                     e.setSalary(salary);
-                    if (e.getSalary() == salary){
+                    if (e.getSalary() == salary) {
                         System.out.println("Successfully change salary!");
                     }
                     break;

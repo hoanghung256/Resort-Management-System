@@ -8,16 +8,17 @@ import java.util.Objects;
  *
  * @author hoang hung
  */
-public class Employee extends Person{
+public class Employee extends Person {
     private String level;
     private String position;
     private double salary;
-    
-    Employee(){
-        
+
+    Employee() {
+
     }
 
-    public Employee(String ID, String fullName, Date dateOfBirth, String identity, boolean gender, String phoneNumber, String email, String level, String position, double salary) {
+    public Employee(String ID, String fullName, Date dateOfBirth, String identity, boolean gender, String phoneNumber,
+            String email, String level, String position, double salary) {
         super(ID, fullName, dateOfBirth, identity, gender, phoneNumber, email);
         this.level = level;
         this.position = position;
@@ -78,16 +79,19 @@ public class Employee extends Person{
         return true;
     }
 
-    public String toStringWriteInFile(){
+    public String toStringWriteInFile() {
         String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(super.getDateOfBirth());
-        String gender = (super.isGender() == true)? "Male" : "Female";
-        return super.getID() + "," + super.getFullName() + "," + dateOfBirth + ","+ gender +","+super.getIdentity()+","+super.getPhoneNumber()+","+super.getEmail()+","+ level+","+position+","+salary;
+        String gender = (super.isGender() == true) ? "Male" : "Female";
+        return super.getID() + "," + super.getFullName() + "," + dateOfBirth + "," + gender + "," + super.getIdentity()
+                + "," + super.getPhoneNumber() + "," + super.getEmail() + "," + level + "," + position + "," + salary;
     }
 
     @Override
     public String toString() {
         String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(super.getDateOfBirth());
-        String gender = (super.isGender() == true)? "Male" : "Female";
-        return super.getID() + ", " + super.getFullName() + ", " + dateOfBirth + ", "+ gender +", "+super.getIdentity()+", "+super.getPhoneNumber()+", "+super.getEmail()+", "+ level+", "+position+", "+salary;
+        String gender = (super.isGender() == true) ? "Male" : "Female";
+        return String.format("| %-10s | %-20s | %-15s | %-15s | %-7s | %-12s | %-25s | %-15s | %-15s | %-7s$ |",
+                super.getID(), super.getFullName(), dateOfBirth, super.getIdentity(), gender, super.getPhoneNumber(),
+                super.getEmail(), level, position, salary);
     }
 }
