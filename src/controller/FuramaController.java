@@ -1,12 +1,9 @@
 package controller;
 
 import java.util.Date;
-
-import model.Employee;
-
 import java.time.LocalDate;
 
-import model.Customer;
+import model.*;
 import repository.CustomerRepository;
 import repository.EmployeeRepository;
 import repository.ICustomerRepository;
@@ -139,12 +136,17 @@ public class FuramaController extends Menu<String> {
                         String level = val.getString("Enter Customer level: ");
                         String address = val.getAndValidValue("Enter Address: ", "^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$",
                                 "Address must be upper case first character of each word!");
-                        Customer c = new Customer(id, fullName, dateOfBirth, identity, gender, phoneNumber, email,
+                        Customer newCus = new Customer(id, fullName, dateOfBirth, identity, gender, phoneNumber, email,
                                 level, address);
-                        customerService.add(c);
+                        customerService.add(newCus);
                         break;
                     case 3:
-                        // Use findById() to know which person user want to edit then call update()
+                        Customer c;
+                        do {
+                        String inputId = val.getAndValidCusId("Enter customer ID: ");
+                            c = customerService.findById(inputId);
+                        } while (c == null);
+                        customerService.update(c);
                         break;
                     case 4:
                         customerService.save();

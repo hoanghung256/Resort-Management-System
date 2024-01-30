@@ -13,12 +13,13 @@ public class Customer extends Person {
     // private Service service;
     // private Booking booking;
     private String address;
-    
-    Customer(){
-        
+
+    Customer() {
+
     }
 
-    public Customer(String ID, String fullName, Date dateOfBirth, String identity, boolean gender, String phoneNumber, String email, String level, String address) {
+    public Customer(String ID, String fullName, Date dateOfBirth, String identity, boolean gender, String phoneNumber,
+            String email, String level, String address) {
         super(ID, fullName, dateOfBirth, identity, gender, phoneNumber, email);
         this.level = level;
         this.address = address;
@@ -33,19 +34,19 @@ public class Customer extends Person {
     }
 
     // public Service getService() {
-    //     return service;
+    // return service;
     // }
 
     // public void setService(Service service) {
-    //     this.service = service;
+    // this.service = service;
     // }
 
     // public Booking getBooking() {
-    //     return booking;
+    // return booking;
     // }
 
     // public void setBooking(Booking booking) {
-    //     this.booking = booking;
+    // this.booking = booking;
     // }
 
     public String getAddress() {
@@ -79,27 +80,32 @@ public class Customer extends Person {
             return false;
         }
         // if (!Objects.equals(this.service, other.service)) {
-        //     return false;
+        // return false;
         // }
         // if (!Objects.equals(this.booking, other.booking)) {
-        //     return false;
+        // return false;
         // }
         if (!Objects.equals(this.address, other.address)) {
             return false;
         }
         return true;
     }
-    public String toStringWriteInFile(){
+
+    public String toStringWriteInFile() {
         String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(super.getDateOfBirth());
-        String gender = (super.isGender() == true)? "Male" : "Female";
-        return super.getID() + "," + super.getFullName() + "," + dateOfBirth + ","+ gender +","+super.getIdentity()+","+super.getPhoneNumber()+","+super.getEmail()+","+ level+","+address;
+        String gender = (super.isGender() == true) ? "Male" : "Female";
+        return super.getID() + ", " + super.getFullName() + ", " + dateOfBirth + ", " + gender + ", "
+                + super.getIdentity() + ", " + super.getPhoneNumber() + ", " + super.getEmail() + ", " + level + ", "
+                + address;
     }
-    
+
     @Override
     public String toString() {
         String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(super.getDateOfBirth());
-        String gender = (super.isGender() == true)? "Male" : "Female";
-        return "Customer{" +" "+ super.getID() +" " + gender + dateOfBirth + "level=" + level + ", address=" + address + '}';
+        String gender = (super.isGender() == true) ? "Male" : "Female";
+        return super.getID() + ", " + super.getFullName() + ", " + dateOfBirth + ", " + gender + ", "
+                + super.getIdentity() + ", " + super.getPhoneNumber() + ", " + super.getEmail() + ", " + level + ", "
+                + address;
     }
-    
+
 }

@@ -6,9 +6,9 @@ package service;
  */
 public interface Service<T> {
     public T findById(String id);
-    
+
     public void display();
-    
+
     public void add(T entity);
     
     public void update(T entity);
