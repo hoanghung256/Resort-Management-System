@@ -14,11 +14,12 @@ import utils.Validation;
 public class EmployeeService implements IEmployeeService {
     private IEmployeeRepository employeeRepo;
     private ArrayList<Employee> employees;
-    static Validation validation = new Validation();
+    static Validation val;
 
     public EmployeeService(IEmployeeRepository employeeRepo) {
         this.employeeRepo = employeeRepo;
         employees = employeeRepo.readFile();
+        val = new Validation();
     }
 
     @Override
