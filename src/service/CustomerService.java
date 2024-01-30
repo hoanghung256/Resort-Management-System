@@ -15,10 +15,6 @@ public class CustomerService implements ICustomerService {
         customers = customerRepo.readFile();
     }
 
-    public CustomerService() {
-
-    }
-
     @Override
     public Customer findById(String id) {
         // TODO Auto-generated method stub
@@ -30,17 +26,17 @@ public class CustomerService implements ICustomerService {
         if (customers.isEmpty()) {
             System.out.println("No customer found.");
         } else {
-            System.out.println("+-----+--------------+----------+-----------------+--------+--------------+----------------------+----------+----------------------+");
-            System.out.printf("| %-10s | %-20s | %-10s | %-15s | %-6s | %-12s | %-20s | %-10s | %-20s |%n",
+            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            System.out.printf("| %-10s | %-20s | %-10s | %-15s | %-10s | %-12s | %-30s | %-10s | %-20s |%n",
                     "ID", "Full Name", "Birthday", "Identification", "Gender", "Phone number", "Email", "Level", "Address");
-            System.out.println("+-----+--------------+----------+-----------------+--------+--------------+----------------------+----------+----------------------+");
+            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
             for (Customer st : customers) {
                 String gender = (st.isGender() == true) ? "Male" : "Female";
                 String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(st.getDateOfBirth());
                 System.out.printf("| %-10s | %-20s | %-10s | %-15s | %-5s | %-12s | %-20s | %-10s | %-20s |%n",
                         st.getID(), st.getFullName(), dateOfBirth, st.getIdentity(), gender, st.getPhoneNumber(), st.getEmail(), st.getLevel(), st.getAddress());
             }
-            System.out.println("+-----+--------------+----------+-----------------+--------+--------------+----------------------+----------+----------------------+");
+            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
         }
     }
 
