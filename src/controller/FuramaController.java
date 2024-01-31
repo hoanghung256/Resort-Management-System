@@ -78,8 +78,7 @@ public class FuramaController extends Menu<String> {
                         Date dateOfBirth = java.sql.Date.valueOf(date);
                         String identity = val.getAndValidIdentificationNum("Enter employee's identification number: ");
                         String phoneNumber = val.getAndValidPhone("Enter employee's phone number: ");
-                        String email = val.getAndValidValue("Enter employee's email: ", "^(.+)@(\\S+)$",
-                                "Invalid email. Please enter email again!");
+                        String email = val.getAndValidEmail("Enter employee's email: ");
                         String level = val.getString("Enter employee's level: ");
                         String position = val.getString("Enter employee's position: ");
                         Double salary = val.getAndValidSalary("Enter employee's salary: ");
@@ -131,8 +130,7 @@ public class FuramaController extends Menu<String> {
                                 "Gender must be Male or Female!");
                         boolean gender = gen.equals("M") ? true : false;
                         String phoneNumber = val.getAndValidPhone("Enter phone number: ");
-                        String email = val.getAndValidValue("Enter customer email: ", "(.+)@(\\S+)$",
-                                "Email must be follow YY..Y@gmail.com");
+                        String email = val.getAndValidEmail("Enter customer's email: ");
                         String level = val.getString("Enter Customer level: ");
                         String address = val.getAndValidValue("Enter Address: ", "^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$",
                                 "Address must be upper case first character of each word!");

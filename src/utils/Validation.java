@@ -2,7 +2,6 @@ package utils;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Validation implements IValidation {
@@ -149,14 +148,10 @@ public class Validation implements IValidation {
         } catch (DateTimeException ex) {
             throw new Exception("Invalid date. Please enter a valid date.");
         }
-
-        if (dob.isAfter(LocalDate.now())) {
-            throw new Exception("Date of birth cannot be in the future. Please enter a valid date.");
-        }
     }
 
     //check eligible age
-    public void calculateAge(LocalDate birthDate) {
+    public int calculateAge(LocalDate birthDate) {
         LocalDate currentDate = LocalDate.now();
 
         int age = currentDate.getYear() - birthDate.getYear();
@@ -169,5 +164,20 @@ public class Validation implements IValidation {
         } else {
             System.out.println("You are not eligible. Age: " + age);
         }
+        return age;
+    }
+    
+    //input email
+    @Override
+    public String getAndValidEmail(String msg) {
+        String identification;
+        do {
+            try {
+                identification = getAndValidValue(msg, EMAIL_REGEX, "Invalid email. Please enter a valid email.");
+                return identification;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } while (true);
     }
 }

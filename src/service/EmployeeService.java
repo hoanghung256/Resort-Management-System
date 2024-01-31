@@ -107,8 +107,7 @@ public class EmployeeService implements IEmployeeService {
                     }
                     break;
                 case 7:
-                    String email = val.getAndValidValue("Enter new email: ",
-                            "^([\\w-\\.]+){1,64}@([\\w&&[^_]]+){2,255}.[a-z]{2,}$", "Invalid email!");
+                    String email = val.getAndValidEmail("Enter new email: ");
                     e.setEmail(email);
                     if (e.getEmail().equals(email)) {
                         System.out.println("Successfully change email.");
