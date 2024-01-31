@@ -33,7 +33,7 @@ public class CustomerService implements ICustomerService {
             for (Customer st : customers) {
                 String gender = (st.isGender() == true) ? "Male" : "Female";
                 String dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").format(st.getDateOfBirth());
-                System.out.printf("| %-10s | %-20s | %-10s | %-15s | %-5s | %-12s | %-20s | %-10s | %-20s |%n",
+                System.out.printf("| %-10s | %-20s | %-10s | %-15s | %-10s | %-12s | %-30s | %-10s | %-20s |%n",
                         st.getID(), st.getFullName(), dateOfBirth, st.getIdentity(), gender, st.getPhoneNumber(), st.getEmail(), st.getLevel(), st.getAddress());
             }
             System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
