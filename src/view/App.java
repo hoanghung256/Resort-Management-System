@@ -1,7 +1,6 @@
 package view;
 
 import controller.FuramaController;
-import utils.Validation;
 
 /**
  *
