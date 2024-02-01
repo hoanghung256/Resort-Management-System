@@ -69,7 +69,14 @@ public class FuramaController extends Menu<String> {
                         employeeService.display();
                         break;
                     case 2:
-                        String id = val.getAndValidEmpId("Enter new employee ID: ");
+                        String id;
+                        do {
+                            id = val.getAndValidEmpId("Enter new employee ID: ");
+                            if (employeeService.findById(id) != null) {
+                                System.out.println("Employee ID have been existed! Please enter a unique ID.");
+                            }
+                        } while (employeeService.findById(id) != null);
+
                         String name = val.getAndValidPersonName("Enter new employee's Name: ");
                         String gender = val.getAndValidValue("Enter employee's gender: ", "M|F",
                                 "Invalid gender! Please input again!");
@@ -118,10 +125,17 @@ public class FuramaController extends Menu<String> {
             public void execute(int choice) {
                 switch (choice) {
                     case 1:
-
+                        customerService.display();
                         break;
                     case 2:
-                        String id = val.getAndValidCusId("Enter customer ID: ");
+                        String id;
+                        do {
+                            id = val.getAndValidEmpId("Enter new customer ID: ");
+                            if (customerService.findById(id) != null) {
+                                System.out.println("Customer ID have been existed! Please enter a unique ID.");
+                            }
+                        } while (customerService.findById(id) != null);
+
                         String fullName = val.getAndValidPersonName("Enter customer's name: ");
                         LocalDate date = val.getAndValidDate("Enter date of birth: ");
                         Date dateOfBirth = java.sql.Date.valueOf(date);
@@ -147,7 +161,7 @@ public class FuramaController extends Menu<String> {
                         customerService.update(c);
                         break;
                     case 4:
-                        customerService.save();
+                        // customerService.save();
                         break;
                 }
             }
