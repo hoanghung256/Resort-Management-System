@@ -12,8 +12,17 @@ public class Booking implements Comparable<Booking> {
     private Date bookDate;
     private Date startDate;
     private Date endDate;
-    private String CustomerID;
+    private String customerID;
     private String serviceID;
+
+    public Booking(String bookingID, Date bookDate, Date startDate, Date endDate, String customerID, String serviceID) {
+        this.bookingID = bookingID;
+        this.bookDate = bookDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.customerID = customerID;
+        this.serviceID = serviceID;
+    }
 
     public String getBookingID() {
         return bookingID;
@@ -48,11 +57,11 @@ public class Booking implements Comparable<Booking> {
     }
 
     public String getCustomerID() {
-        return CustomerID;
+        return customerID;
     }
 
     public void setCustomerID(String customerID) {
-        CustomerID = customerID;
+        customerID = customerID;
     }
 
     public String getServiceID() {
@@ -92,7 +101,7 @@ public class Booking implements Comparable<Booking> {
                 ", bookDate=" + bookDate +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", CustomerID='" + CustomerID + '\'' +
+                ", CustomerID='" + customerID + '\'' +
                 ", serviceID='" + serviceID + '\'' +
                 '}';
     }
