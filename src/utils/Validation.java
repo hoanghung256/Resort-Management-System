@@ -180,4 +180,18 @@ public class Validation implements IValidation {
             }
         } while (true);
     }
+    //input service code
+    @Override
+    public String getAndValidServiceCode(String msg) {
+        String serviceCode;
+        do {
+            try {
+                serviceCode = getAndValidValue(msg, SERVICECODE_REGEX,
+                        "Invalid service code. Please enter a valid service code.");
+                return serviceCode;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } while (true);
+    }
 }
