@@ -22,6 +22,9 @@ public interface IValidation {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     //use try catch to format date. Ex: LocalDate validDate = LocalDate.parse(DateStr, formatter)
 
+    static final String SERVICECODE_REGEX = "^SV(VL|HO|RO)-\\d{4}$";
+    // Define regex for service code format: SV(VL/HO/RO)-YYYY (YYYY is digit from 0-9)
+
     public String getString(String msg);
 
     public String getAndValidEmpId(String msg);
@@ -39,4 +42,8 @@ public interface IValidation {
     public LocalDate getAndValidDate(String msg);
 
     public String getAndValidEmail(String msg);
+
+    //new function - RM-23
+    public String getAndValidServiceCode(String msg);
+
 }
