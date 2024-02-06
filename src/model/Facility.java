@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Date;
-
 public abstract class Facility {
 
     private String facilityID;
@@ -9,9 +7,9 @@ public abstract class Facility {
     private double area;
     private double prices;
     private int quantityMax;
-    private Date type;
+    private String type;
 
-    public Facility(String facilityID, String facilityName, double area, double prices, int quantityMax, Date type) {
+    public Facility(String facilityID, String facilityName, double area, double prices, int quantityMax, String type) {
         this.facilityID = facilityID;
         this.facilityName = facilityName;
         this.area = area;
@@ -63,15 +61,12 @@ public abstract class Facility {
         this.quantityMax = quantityMax;
     }
 
-    public Date getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Date type) {
+    public void setType(String type) {
         this.type = type;
     }
-
-    @Override
-    public abstract String toString();
 
 }
