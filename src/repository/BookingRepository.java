@@ -1,6 +1,7 @@
 package repository;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import model.Booking;
 
@@ -10,15 +11,14 @@ import model.Booking;
  */
 public class BookingRepository implements IBookingRepository {
     @Override
-    public ArrayList<Booking> readFile() {
+    public TreeSet<Booking> readFile() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'readFile'");
     }
 
     @Override
-    public void writeFile(ArrayList<Booking> bookings) {
+    public void writeFile(TreeSet<Booking> bookings) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'writeFile'");
     }
-    
 }

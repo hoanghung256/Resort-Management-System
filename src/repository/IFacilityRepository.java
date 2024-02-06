@@ -1,6 +1,6 @@
 package repository;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import model.Facility;
 
@@ -8,12 +8,12 @@ import model.Facility;
  *
  * @author hoang hung
  */
-public interface IFacilityRepository extends Repository<Facility> {
+public interface IFacilityRepository extends Repository<Facility, LinkedHashMap<Facility, Integer>> {
     final String facilitiesPath = "\\data\\facility.csv";
 
     @Override
-    public ArrayList<Facility> readFile();
+    public LinkedHashMap<Facility, Integer> readFile();
 
     @Override 
-    public void writeFile(ArrayList<Facility> facilities);
+    public void writeFile(LinkedHashMap<Facility, Integer> facilities);
 }

@@ -1,6 +1,7 @@
 package repository;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import model.Facility;
 
@@ -10,15 +11,14 @@ import model.Facility;
  */
 public class FacilityRepository implements IFacilityRepository {
     @Override
-    public ArrayList<Facility> readFile() {
+    public LinkedHashMap<Facility, Integer> readFile() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'readFile'");
     }
 
     @Override
-    public void writeFile(ArrayList<Facility> facilities) {
+    public void writeFile(LinkedHashMap<Facility, Integer> facilities) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'writeFile'");
     }
-    
 }

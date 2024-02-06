@@ -1,6 +1,6 @@
 package repository;
 
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 import model.Booking;
 
@@ -8,12 +8,12 @@ import model.Booking;
  *
  * @author hoang hung
  */
-public interface IBookingRepository extends Repository<Booking> {
+public interface IBookingRepository extends Repository<Booking, TreeSet<Booking>> {
     final String bookingsPath = "\\data\\booking.csv";
 
     @Override
-    public ArrayList<Booking> readFile();
+    public TreeSet<Booking> readFile();
 
     @Override 
-    public void writeFile(ArrayList<Booking> bookings);
+    public void writeFile(TreeSet<Booking> bookings);
 }

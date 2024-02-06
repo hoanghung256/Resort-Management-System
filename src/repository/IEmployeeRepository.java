@@ -1,13 +1,14 @@
 package repository;
 
 import java.util.ArrayList;
+
 import model.Employee;
 
 /**
  *
  * @author hoang hung
  */
-public interface IEmployeeRepository extends Repository<Employee> {
+public interface IEmployeeRepository extends Repository<Employee, ArrayList<Employee>> {
     final String employeesPath = "\\data\\employee.csv";
 
     @Override
