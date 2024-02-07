@@ -20,6 +20,8 @@ public interface IBookingService extends Service<Booking> {
 
     void displayContractList();
 
+    void updateContract();
+
     @Override
     void save();
 }
