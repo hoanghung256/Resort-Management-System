@@ -8,17 +8,16 @@ import model.Customer;
  */
 public interface ICustomerService extends Service<Customer> {
     @Override
-    public Customer findById(String id);
+    Customer findById(String id);
 
     @Override
-    public void display();
+    void display();
 
     @Override
-    public void add(Customer c);
+    void add(Customer c);
+
+    void update(Customer c);
 
     @Override
-    public void update(Customer c);
-
-    @Override
-    public void save();
+    void save();
 }
