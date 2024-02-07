@@ -1,5 +1,7 @@
 package model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -94,15 +96,15 @@ public class Booking implements Comparable<Booking> {
         }
     }
 
+    public String toStringWriteInFile() {
+        DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
+        return bookingID + "," + date.format(bookDate) + "," + date.format(startDate) + "," + date.format(endDate) + "," + customerID + "," + serviceID;
+    }
+
     @Override
     public String toString() {
-        return "Booking{" +
-                "bookingID='" + bookingID + '\'' +
-                ", bookDate=" + bookDate +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", CustomerID='" + customerID + '\'' +
-                ", serviceID='" + serviceID + '\'' +
-                '}';
+        DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
+        return String.format("| %-10s | %-15s | %-15s | %-15s | %-10s | %-10s |",
+                bookingID, date.format(bookDate), date.format(startDate), date.format(endDate), customerID, serviceID);
     }
 }
