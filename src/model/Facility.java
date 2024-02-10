@@ -2,12 +2,14 @@ package model;
 
 public abstract class Facility {
 
+    private int quantityAvailable;
     private String facilityID;
     private String facilityName;
     private double area;
     private double prices;
     private int quantityMax;
     private String type;
+    //new variable
 
     public Facility(String facilityID, String facilityName, double area, double prices, int quantityMax, String type) {
         this.facilityID = facilityID;
@@ -16,6 +18,16 @@ public abstract class Facility {
         this.prices = prices;
         this.quantityMax = quantityMax;
         this.type = type;
+    }
+
+    public Facility(int quantityAvailable, String facilityID, String facilityName, double area, double prices, int quantityMax, String type) {
+        this.facilityID = facilityID;
+        this.facilityName = facilityName;
+        this.area = area;
+        this.prices = prices;
+        this.quantityMax = quantityMax;
+        this.type = type;
+        this.quantityAvailable = quantityAvailable;
     }
 
     public Facility() {
@@ -67,6 +79,14 @@ public abstract class Facility {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getQuantityAvailable() {
+        return quantityAvailable;
+    }
+
+    public void setQuantityAvailable(int quantityAvailable) {
+        this.quantityAvailable = quantityAvailable;
     }
 
 }
