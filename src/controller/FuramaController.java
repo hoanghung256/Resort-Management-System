@@ -209,6 +209,7 @@ public class FuramaController extends Menu<String> {
                         bookingService.display();
                         break;
                     case 3:
+                        bookingService.createNewContract();
                         break;
                     case 4:
                         break;
@@ -216,7 +217,7 @@ public class FuramaController extends Menu<String> {
                         break;
                     case 6:
                         // bookingService.save();
-                        break;
+                        return;
                 }
             }
         };
