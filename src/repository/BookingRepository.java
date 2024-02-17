@@ -50,7 +50,7 @@ public class BookingRepository implements IBookingRepository {
             }
             w.close();
         } catch (Exception e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
     }
 }
