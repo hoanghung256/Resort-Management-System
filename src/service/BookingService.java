@@ -31,7 +31,18 @@ public class BookingService implements IBookingService {
 
     @Override
     public void display() {
-
+        if (bookings.isEmpty()) {
+            System.out.println("No booking found.");
+        } else {
+            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            System.out.printf("| %-10s | %-15s | %-15s | %-15s | %-12s | %-12s |%n",
+                    "Booking ID", "Book date", "Start date", "End date", "Customer ID", "Service ID");
+            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            for (Booking st : bookings) {
+                System.out.println(st.toString());
+            }
+            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+        }
     }
 
     @Override

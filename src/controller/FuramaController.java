@@ -206,6 +206,7 @@ public class FuramaController extends Menu<String> {
                         bookingService.add(newBooking);
                         break;
                     case 2:
+                        bookingService.display();
                         break;
                     case 3:
                         break;
