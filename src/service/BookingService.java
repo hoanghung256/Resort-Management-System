@@ -11,7 +11,6 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- *
  * @author
  */
 public class BookingService implements IBookingService {
@@ -21,15 +20,16 @@ public class BookingService implements IBookingService {
     private ArrayList<Contract> contracts = new ArrayList<>();
     private Validation val = new Validation();
 
-    public BookingService(IBookingRepository bookingRepo){
+    public BookingService(IBookingRepository bookingRepo) {
         this.bookingRepo = bookingRepo;
         bookings = bookingRepo.readFile();
         bookingQueue.addAll(bookings);
     }
+
     @Override
     public Booking findById(String id) {
-        for (Booking b : bookings){
-            if (b.getBookingID().equals(id)){
+        for (Booking b : bookings) {
+            if (b.getBookingID().equals(id)) {
                 return b;
             }
         }
@@ -63,13 +63,13 @@ public class BookingService implements IBookingService {
         String bookID;
         String contractID;
         Contract contract;
-        for (Booking b : bookingQueue){
+        for (Booking b : bookingQueue) {
             contract = null;
             serID = b.getServiceID();
             bookID = b.getBookingID();
-            if (serID.matches("^SV(VL|HO)-\\d{4}$")){
+            if (serID.matches("^SV(VL|HO)-\\d{4}$")) {
                 contractID = serID + bookID;
-                for (Contract c : contracts){
+                for (Contract c : contracts) {
                     if (c.getContractID().equals(contractID)) contract = c;
                     if (contract != null) break;
                 }
@@ -102,7 +102,36 @@ public class BookingService implements IBookingService {
 
     @Override
     public void updateContract() {
-
+        String bookID = val.getAndValidValue("Enter contract booking ID to find contract information: ", "^BK[\\d]+$", "Invalid booking ID!");
+        String serID = findById(bookID).getServiceID();
+        String contractID = serID + bookID;
+        Contract contract = null;
+        for (Contract c : contracts) {
+            if (c.getContractID().equals(contractID)) {
+                contract = c;
+                break;
+            }
+        }
+        if (contract == null) return;
+        while (true) {
+            System.out.println("Which information would you like to update?" +
+                    "\n1. Pre-payment amount: " +
+                    "\n2. Total payment amount: " +
+                    "\n3. Return.");
+            int choice = Integer.parseInt(val.getAndValidValue("Enter your choice: ", "(1|2|3)", "Invalid choice"));
+            switch (choice) {
+                case 1:
+                    double newPrePayment = val.getAndValidSalary("Enter new pre-payment amount: ");
+                    contract.setPrePayment(newPrePayment);
+                    break;
+                case 2:
+                    double newTotal = val.getAndValidSalary("Enter new total payment amount: ");
+                    contract.setTotalAmount(newTotal);
+                    break;
+                case 3:
+                    return;
+            }
+        }
     }
 
     @Override

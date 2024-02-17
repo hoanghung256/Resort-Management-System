@@ -212,8 +212,10 @@ public class FuramaController extends Menu<String> {
                         bookingService.createNewContract();
                         break;
                     case 4:
+                        bookingService.displayContractList();
                         break;
                     case 5:
+                        bookingService.updateContract();
                         break;
                     case 6:
                         // bookingService.save();
