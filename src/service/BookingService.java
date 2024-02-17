@@ -86,6 +86,18 @@ public class BookingService implements IBookingService {
 
     @Override
     public void displayContractList() {
+        if (contracts.isEmpty()) {
+            System.out.println("No contracts found.");
+        } else {
+            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            System.out.printf("| %-12s | %-12s | %-15s | %-15s |%n",
+                    "Contract ID", "Booking ID", "Pre-Payment", "Total");
+            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            for (Contract st : contracts) {
+                System.out.println(st.toString());
+            }
+            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+        }
     }
 
     @Override
