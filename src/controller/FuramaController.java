@@ -196,12 +196,17 @@ public class FuramaController extends Menu<String> {
                             }
                         } while (customerService.findById(cusID) == null);
                         String serID;
+                        Facility facility = null;
                         do {
                             serID = val.getAndValidServiceCode("Enter available service ID: ");
                             if (facilityService.findById(serID) != null) {
+                                facility = facilityService.findById(serID);
                                 break;
                             }
                         } while (facilityService.findById(serID) == null);
+                        if (facilityRepo.readFile().containsKey(facility)) {
+                            facilityRepo.readFile().put(facility, facilityRepo.readFile().get(facility) + 1);
+                        }
                         Booking newBooking = new Booking(bookID, bookDate, startDate, endDate, cusID, serID);
                         bookingService.add(newBooking);
                         break;
@@ -218,7 +223,7 @@ public class FuramaController extends Menu<String> {
                         bookingService.updateContract();
                         break;
                     case 6:
-                        // bookingService.save();
+                        bookingService.save();
                         return;
                 }
             }
