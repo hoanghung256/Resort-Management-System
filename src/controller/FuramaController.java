@@ -1,8 +1,8 @@
 package controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.LocalDate;
-import java.util.TreeSet;
 
 import model.*;
 import repository.*;
@@ -14,11 +14,13 @@ import view.Menu;
  * @author hoang hung
  */
 public class FuramaController extends Menu<String> {
+
     private static final String MENU_TITLE = "FURAMA RESORT MANAGEMENT";
     private static final String[] MENU_OPTIONS = {"Employee Management", "Customer Management", "Facility Management",
             "Booking Management", "Promotion Management", "Exit"};
     private Menu<String> employeeManagementMenu;
     private Menu<String> customerManagementMenu;
+    private Menu<String> facilityManagementMenu;
     private Menu<String> bookingManagementMenu;
     private Validation val;
 
@@ -37,7 +39,7 @@ public class FuramaController extends Menu<String> {
                 runCustomerManagementMenu();
                 break;
             case 3:
-                // Call Facility Management menu
+                runFacilityManagementMenu();
                 break;
             case 4:
                 runBookingManagementMenu();
@@ -102,7 +104,7 @@ public class FuramaController extends Menu<String> {
                         employeeService.update(e);
                         break;
                     case 4:
-                        // employeeService.save();
+                        employeeService.save();
                         return;
                 }
             }
@@ -159,13 +161,72 @@ public class FuramaController extends Menu<String> {
                         customerService.update(c);
                         break;
                     case 4:
-                        // customerService.save();
+                        customerService.save();
                         break;
                 }
             }
         };
 
         customerManagementMenu.run();
+    }
+
+    private void runFacilityManagementMenu() {
+        String title = "Booking MANAGEMENT";
+        String[] options = {"Add new facility", "Display facility list", "Display maintenance list", "Return main menu"};
+        IFacilityRepository facilityRepo = new FacilityRepository();
+        FacilityService facilityService = new FacilityService(facilityRepo);
+
+        facilityManagementMenu = new Menu<String>(title, options) {
+            @Override
+            public void execute(int choice) {
+                switch (choice) {
+                    case 1:
+                        String idFacility;
+                        do {
+                            idFacility = val.getAndValidServiceCode("Enter new facility code (SVxx-yyyy; xx: VL(villa), HO(house), RO(room); y:0-9): ");
+                            if (facilityService.findById(idFacility) != null) {
+                                System.out.println("Facility ID have been existed! Please enter a unique ID.");
+                            }
+                        } while (facilityService.findById(idFacility) != null);
+                        String nameFacility = val.getAndValidValue("Enter new facility name: ", "^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$", "Invalid facility name. Please enter a valid name.");
+                        double area = val.getAndValidDouble("Enter area: ");
+                        double prices = val.getAndValidDouble("Enter rental cost: ");
+                        int maxPeople = val.getAndValidInt("Enter max people: ");
+                        String type = val.getString("Enter rental type (hour,day,month,year): ");
+
+                        Facility facility = null;
+                        if (idFacility.startsWith("SVVL")) {
+                            String standRoom = val.getString("Enter room standroom: ");
+                            double poolArea = val.getAndValidDouble("Enter pool area: ");
+                            int floors = val.getAndValidInt("Enter number of floors: ");
+                            facility = new Villa(idFacility, nameFacility, area, prices, maxPeople, type, standRoom, poolArea, floors);
+                            facilityService.add(facility);
+                        }
+                        if (idFacility.startsWith("SVHO")) {
+                            String standRoom = val.getString("Enter room standroom: ");
+                            int floors = val.getAndValidInt("Enter number of floors: ");
+                            facility = new House(idFacility, nameFacility, area, prices, maxPeople, type, standRoom, floors);
+                            facilityService.add(facility);
+                        }
+                        if (idFacility.startsWith("SVRO")) {
+                            String freeService = val.getString("Enter free service: ");
+                            facility = new Room(idFacility, nameFacility, area, prices, maxPeople, type, freeService);
+                            facilityService.add(facility);
+                        }
+                        break;
+                    case 2:
+                        facilityService.display();
+                        break;
+                    case 3:
+                        facilityService.displayMaintenanceList();
+                        break;
+                    case 4:
+                        facilityService.save();
+                        break;
+                }
+            }
+        };
+        facilityManagementMenu.run();
     }
 
     private void runBookingManagementMenu() {
@@ -177,7 +238,7 @@ public class FuramaController extends Menu<String> {
         ICustomerRepository customerRepo = new CustomerRepository();
         CustomerService customerService = new CustomerService(customerRepo);
         IFacilityRepository facilityRepo = new FacilityRepository();
-        FacilityService facilityService = new FacilityService();
+        FacilityService facilityService = new FacilityService(facilityRepo);
 
         bookingManagementMenu = new Menu<String>(title, options) {
             @Override
@@ -204,11 +265,24 @@ public class FuramaController extends Menu<String> {
                                 break;
                             }
                         } while (facilityService.findById(serID) == null);
-                        if (facilityRepo.readFile().containsKey(facility)) {
-                            facilityRepo.readFile().put(facility, facilityRepo.readFile().get(facility) + 1);
+
+                        if (facilityService.getMap().containsKey(facility)) {
+                            for (Booking b : bookingRepo.readFile()) {
+                                if (b.getServiceID().equals(facility != null ? facility.getFacilityID() : null)) {
+                                    if (Integer.parseInt(startDate.toString().split("-")[1]) > Integer.parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate()).split("/")[1]) || startDate.toString().split("-")[1].equals("01") && new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate()).split("/")[1].equals("12")) {
+                                        facility.setQuantityUsing(0);
+                                        break;
+                                    }
+                                }
+                            }
+                            if (facilityService.getMap().get(facility) <= 5) {
+                                facilityService.getMap().put(facility, facilityService.getMap().get(facility) + 1);
+                            }
                         }
                         Booking newBooking = new Booking(bookID, bookDate, startDate, endDate, cusID, serID);
                         bookingService.add(newBooking);
+                        facilityService.save();
+                        System.out.println("Add new Booking successfully!");
                         break;
                     case 2:
                         bookingService.display();
