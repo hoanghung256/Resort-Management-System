@@ -51,10 +51,8 @@ public class FacilityRepository implements IFacilityRepository {
                         facility = new Room(id, name, area, prices, quantityMax, type, freeService);
                     }
 
-//                faList.add(new Facility(id, name, area, prices, quantityMax, type) {
-//                });
-                    int quantityAvailable = Integer.parseInt(toString[0]);
-                    facilityMap.put(facility, quantityAvailable);
+                    int quantityUsing = Integer.parseInt(toString[0]);
+                    facilityMap.put(facility, quantityUsing);
                 }
             }
 
@@ -72,8 +70,8 @@ public class FacilityRepository implements IFacilityRepository {
         try {
             PrintWriter pr = new PrintWriter(path + facilitiesPath);
             for (Facility facility : facilities.keySet()) {
-                int quantityAvailable = facilities.get(facility);
-                String line = quantityAvailable + "," + facility.getFacilityID() + "," + facility.getFacilityName() + "," + facility.getArea() + ","
+                int quantityUsing = facilities.get(facility);
+                String line = quantityUsing + "," + facility.getFacilityID() + "," + facility.getFacilityName() + "," + facility.getArea() + ","
                         + facility.getPrices() + "," + facility.getQuantityMax() + "," + facility.getType();
                 if (facility instanceof Villa) {
                     Villa villa = (Villa) facility;
@@ -92,29 +90,6 @@ public class FacilityRepository implements IFacilityRepository {
         } catch (Exception e) {
             e.getMessage();
         }
-    }
-
-    public static void main(String[] args) {
-        FacilityRepository facilityRepository = new FacilityRepository();
-
-        System.out.println("Reading facilities from file...");
-        LinkedHashMap<Facility, Integer> facilityMap = facilityRepository.readFile();
-
-        if (facilityMap != null) {
-            System.out.println("Facilities read successfully:");
-            for (Facility facility : facilityMap.keySet()) {
-                int quantityAvailable = facilityMap.get(facility);
-                System.out.println(facility + " - Quantity Available: " + quantityAvailable);
-            }
-        } else {
-            System.out.println("Failed to read facilities from file.");
-        }
-
-        // Test writeFile() method
-        System.out.println("\nWriting facilities to file...");
-        // Assuming facilityMap has been modified or created with some new facilities
-        facilityRepository.writeFile(facilityMap);
-        System.out.println("Facilities written successfully to file.");
     }
 
 }

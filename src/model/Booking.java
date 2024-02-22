@@ -104,7 +104,7 @@ public class Booking implements Comparable<Booking> {
     @Override
     public String toString() {
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-        return String.format("| %-10s | %-15s | %-15s | %-15s | %-10s | %-10s |",
+        return String.format("| %-10s | %-15s | %-15s | %-15s | %-12s | %-12s |",
                 bookingID, date.format(bookDate), date.format(startDate), date.format(endDate), customerID, serviceID);
     }
 }

@@ -2,7 +2,7 @@ package model;
 
 public abstract class Facility {
 
-    private int quantityAvailable;
+    private int quantityUsing;
     private String facilityID;
     private String facilityName;
     private double area;
@@ -20,14 +20,14 @@ public abstract class Facility {
         this.type = type;
     }
 
-    public Facility(int quantityAvailable, String facilityID, String facilityName, double area, double prices, int quantityMax, String type) {
+    public Facility(int quantityUsing, String facilityID, String facilityName, double area, double prices, int quantityMax, String type) {
         this.facilityID = facilityID;
         this.facilityName = facilityName;
         this.area = area;
         this.prices = prices;
         this.quantityMax = quantityMax;
         this.type = type;
-        this.quantityAvailable = quantityAvailable;
+        this.quantityUsing = quantityUsing;
     }
 
     public Facility() {
@@ -81,12 +81,12 @@ public abstract class Facility {
         this.type = type;
     }
 
-    public int getQuantityAvailable() {
-        return quantityAvailable;
+    public int getQuantityUsing() {
+        return quantityUsing;
     }
 
-    public void setQuantityAvailable(int quantityAvailable) {
-        this.quantityAvailable = quantityAvailable;
+    public void setQuantityUsing(int quantityUsing) {
+        this.quantityUsing = quantityUsing;
     }
 
 }
