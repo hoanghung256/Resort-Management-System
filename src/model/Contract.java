@@ -48,11 +48,6 @@ public class Contract {
 
     @Override
     public String toString() {
-        return "Contract{" +
-                "contractID='" + contractID + '\'' +
-                ", bookingID='" + bookingID + '\'' +
-                ", prePayment=" + prePayment +
-                ", totalAmount=" + totalAmount +
-                '}';
+        return String.format("| %-12s | %-12s | %-15s | %-15s |", contractID, bookingID, prePayment, totalAmount);
     }
 }

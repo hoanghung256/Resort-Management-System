@@ -194,4 +194,44 @@ public class Validation implements IValidation {
             }
         } while (true);
     }
+    
+    //input double
+     public double getAndValidDouble(String msg) {
+        String d;
+        do {
+            try {
+                d = getAndValidValue(msg, "[\\d.]+", "Invalid input. Please enter again.");
+
+                if (Double.parseDouble(d) <= 0) {
+                    throw new Exception("Value must a positive number");
+                }
+
+                return Double.parseDouble(d);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid.");
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        } while (true);
+    }
+     
+     //input int
+     public int getAndValidInt(String msg) {
+        String d;
+        do {
+            try {
+                d = getAndValidValue(msg, "[\\d]+", "Invalid input. Please enter again.");
+
+                if (Integer.parseInt(d) <= 0) {
+                    throw new Exception("Value must a positive number");
+                }
+
+                return Integer.parseInt(d);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid.");
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        } while (true);
+    }
 }
