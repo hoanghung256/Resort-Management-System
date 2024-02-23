@@ -19,7 +19,7 @@ public class PromotionRepository implements IPromotionRepository {
             TreeSet<Promotion> promotionList = new TreeSet<>();
             while ((line = input.readLine()) != null) {
                 String[] tokString = line.split(",");
-                Promotion promotion = new Promotion(Integer.parseInt(tokString[0]), Integer.parseInt(tokString[1]));
+                Promotion promotion = new Promotion(Integer.parseInt(tokString[1]), Integer.parseInt(tokString[2]));
                 promotionList.add(promotion);
             }
             input.close();

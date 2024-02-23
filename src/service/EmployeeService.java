@@ -59,7 +59,7 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public void update(Employee e) {
         while (true) {
-            String[] split = e.toString().split(", ");
+            String[] split = e.toStringWriteInFile().split(",");
             for (int i = 0; i < 10; i++) {
                 System.out.println((i + 1) + ". " + split[i]);
             }

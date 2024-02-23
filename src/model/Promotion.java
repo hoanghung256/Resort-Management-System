@@ -1,6 +1,9 @@
 package model;
 
-public class Promotion {
+import java.util.Objects;
+
+public class Promotion implements Comparable<Promotion> {
+    String voucherName;
     int discountPercent;
     int numOfVoucher;
 
@@ -23,6 +26,32 @@ public class Promotion {
 
     public void setNumOfVoucher(int numOfVoucher) {
         this.numOfVoucher = numOfVoucher;
+    }
+
+    public void setDPAndNOV(int discountPercent, int numOfVoucher){
+        this.discountPercent = discountPercent;
+        this.numOfVoucher = numOfVoucher;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Promotion promotion)) return false;
+        return getDiscountPercent() == promotion.getDiscountPercent() && getNumOfVoucher() == promotion.getNumOfVoucher();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDiscountPercent(), getNumOfVoucher());
+    }
+
+    @Override
+    public int compareTo(Promotion o) {
+        if (o.discountPercent > this.discountPercent){
+            return o.discountPercent;
+        } else {
+            return this.discountPercent;
+        }
     }
 
     public String toStringWriteInFile() {

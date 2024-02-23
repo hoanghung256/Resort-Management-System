@@ -69,7 +69,7 @@ public class FacilityService implements IFacilityService {
                     System.out.printf("| %-12s | %-20s |%n",
                             facility.getFacilityID(), facility.getFacilityName());
                     System.out.println("+------------+----------------------+");
-                    facility.setQuantityUsing(0);
+                    facilitys.put(facility, 0);
                 }
             }
         }
