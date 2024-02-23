@@ -14,8 +14,7 @@ public class Customer extends Person {
     // private Booking booking;
     private String address;
 
-    Customer() {
-
+    public Customer() {
     }
 
     public Customer(String ID, String fullName, Date dateOfBirth, String identity, boolean gender, String phoneNumber,

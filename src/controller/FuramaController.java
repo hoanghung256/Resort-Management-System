@@ -3,6 +3,8 @@ package controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.LocalDate;
+import java.util.Stack;
+import java.util.TreeSet;
 
 import model.*;
 import repository.*;
@@ -16,12 +18,13 @@ import view.Menu;
 public class FuramaController extends Menu<String> {
 
     private static final String MENU_TITLE = "FURAMA RESORT MANAGEMENT";
-    private static final String[] MENU_OPTIONS = {"Employee Management", "Customer Management", "Facility Management",
-            "Booking Management", "Promotion Management", "Exit"};
+    private static final String[] MENU_OPTIONS = { "Employee Management", "Customer Management", "Facility Management",
+            "Booking Management", "Promotion Management", "Exit" };
     private Menu<String> employeeManagementMenu;
     private Menu<String> customerManagementMenu;
     private Menu<String> facilityManagementMenu;
     private Menu<String> bookingManagementMenu;
+    private Menu<String> promotionManagementMenu;
     private Validation val;
 
     public FuramaController() {
@@ -45,7 +48,7 @@ public class FuramaController extends Menu<String> {
                 runBookingManagementMenu();
                 break;
             case 5:
-                // Call Promotion Management menu
+                runPromotionManagementMenu();
                 break;
             case 6:
                 System.out.println("Goodbye!");
@@ -56,8 +59,8 @@ public class FuramaController extends Menu<String> {
 
     private void runEmployeeManagementMenu() {
         String title = "EMPLOYEE MANAGEMENT";
-        String[] options = {"Display employees list", "Add new employee", "Edit employee information",
-                "Return main menu"};
+        String[] options = { "Display employees list", "Add new employee", "Edit employee information",
+                "Return main menu" };
         IEmployeeRepository employeeRepo = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepo);
 
@@ -115,8 +118,8 @@ public class FuramaController extends Menu<String> {
 
     private void runCustomerManagementMenu() {
         String title = "CUSTOMER MANAGEMENT";
-        String[] options = {"Display customers list", "Add new customer", "Edit customer information",
-                "Return main menu"};
+        String[] options = { "Display customers list", "Add new customer", "Edit customer information",
+                "Return main menu" };
         ICustomerRepository customerRepo = new CustomerRepository();
         CustomerService customerService = new CustomerService(customerRepo);
 
@@ -171,8 +174,9 @@ public class FuramaController extends Menu<String> {
     }
 
     private void runFacilityManagementMenu() {
-        String title = "Booking MANAGEMENT";
-        String[] options = {"Add new facility", "Display facility list", "Display maintenance list", "Return main menu"};
+        String title = "FACILITY MANAGEMENT";
+        String[] options = { "Add new facility", "Display facility list", "Display maintenance list",
+                "Return main menu" };
         IFacilityRepository facilityRepo = new FacilityRepository();
         FacilityService facilityService = new FacilityService(facilityRepo);
 
@@ -183,12 +187,14 @@ public class FuramaController extends Menu<String> {
                     case 1:
                         String idFacility;
                         do {
-                            idFacility = val.getAndValidServiceCode("Enter new facility code (SVxx-yyyy; xx: VL(villa), HO(house), RO(room); y:0-9): ");
+                            idFacility = val.getAndValidServiceCode(
+                                    "Enter new facility code (SVxx-yyyy; xx: VL(villa), HO(house), RO(room); y:0-9): ");
                             if (facilityService.findById(idFacility) != null) {
                                 System.out.println("Facility ID have been existed! Please enter a unique ID.");
                             }
                         } while (facilityService.findById(idFacility) != null);
-                        String nameFacility = val.getAndValidValue("Enter new facility name: ", "^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$", "Invalid facility name. Please enter a valid name.");
+                        String nameFacility = val.getAndValidValue("Enter new facility name: ",
+                                "^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$", "Invalid facility name. Please enter a valid name.");
                         double area = val.getAndValidDouble("Enter area: ");
                         double prices = val.getAndValidDouble("Enter rental cost: ");
                         int maxPeople = val.getAndValidInt("Enter max people: ");
@@ -199,13 +205,15 @@ public class FuramaController extends Menu<String> {
                             String standRoom = val.getString("Enter room standroom: ");
                             double poolArea = val.getAndValidDouble("Enter pool area: ");
                             int floors = val.getAndValidInt("Enter number of floors: ");
-                            facility = new Villa(idFacility, nameFacility, area, prices, maxPeople, type, standRoom, poolArea, floors);
+                            facility = new Villa(idFacility, nameFacility, area, prices, maxPeople, type, standRoom,
+                                    poolArea, floors);
                             facilityService.add(facility);
                         }
                         if (idFacility.startsWith("SVHO")) {
                             String standRoom = val.getString("Enter room standroom: ");
                             int floors = val.getAndValidInt("Enter number of floors: ");
-                            facility = new House(idFacility, nameFacility, area, prices, maxPeople, type, standRoom, floors);
+                            facility = new House(idFacility, nameFacility, area, prices, maxPeople, type, standRoom,
+                                    floors);
                             facilityService.add(facility);
                         }
                         if (idFacility.startsWith("SVRO")) {
@@ -230,9 +238,10 @@ public class FuramaController extends Menu<String> {
     }
 
     private void runBookingManagementMenu() {
-        String title = "Booking MANAGEMENT";
-        String[] options = {"Add new booking", "Display booking list", "Create new contract", "Display contract list", "Edit contract information",
-                "Return main menu"};
+        String title = "BOOKING MANAGEMENT";
+        String[] options = { "Add new booking", "Display booking list", "Create new contract", "Display contract list",
+                "Edit contract information",
+                "Return main menu" };
         IBookingRepository bookingRepo = new BookingRepository();
         BookingService bookingService = new BookingService(bookingRepo);
         ICustomerRepository customerRepo = new CustomerRepository();
@@ -269,7 +278,11 @@ public class FuramaController extends Menu<String> {
                         if (facilityService.getMap().containsKey(facility)) {
                             for (Booking b : bookingRepo.readFile()) {
                                 if (b.getServiceID().equals(facility != null ? facility.getFacilityID() : null)) {
-                                    if (Integer.parseInt(startDate.toString().split("-")[1]) > Integer.parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate()).split("/")[1]) || startDate.toString().split("-")[1].equals("01") && new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate()).split("/")[1].equals("12")) {
+                                    if (Integer.parseInt(startDate.toString().split("-")[1]) > Integer.parseInt(
+                                            new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate()).split("/")[1])
+                                            || startDate.toString().split("-")[1].equals("01")
+                                                    && new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate())
+                                                            .split("/")[1].equals("12")) {
                                         facility.setQuantityUsing(0);
                                         break;
                                     }
@@ -303,5 +316,110 @@ public class FuramaController extends Menu<String> {
             }
         };
         bookingManagementMenu.run();
+    }
+
+    private void runPromotionManagementMenu() {
+        String title = "PROMOTION MANAGEMENT";
+        String[] options = { "Display customer use service", "Display customer get voucher", "Return main menu" };
+        ICustomerRepository customerRepo = new CustomerRepository();
+        CustomerService customerService = new CustomerService(customerRepo);
+        IBookingRepository bookingRepo = new BookingRepository();
+        BookingService bookingService = new BookingService(bookingRepo);
+        IFacilityRepository facilityRepo = new FacilityRepository();
+        FacilityService facilityService = new FacilityService(facilityRepo);
+        IPromotionRepository promotionRepo = new PromotionRepository();
+        PromotionService promotionService = new PromotionService(promotionRepo);
+
+        promotionManagementMenu = new Menu<String>(title, options) {
+            @Override
+            public void execute(int choice) {
+                switch (choice) {
+                    case 1:
+                        Customer c = new Customer();
+                        Facility f;
+                        for (Booking b : bookingRepo.readFile()) {
+                            c = customerService.findById(b.getCustomerID());
+                            f = facilityService.findById(b.getServiceID());
+                            System.out.println(b.getBookDate() + "," + c.getID() + "," + c.getFullName() + ","
+                                    + f.getFacilityName());
+                        }
+                        break;
+                    case 2:
+                        Stack<Integer> voucherStack = promotionService.getStack();
+                        int totalVoucher = bookingRepo.readFile().size();
+                        System.out.println("Total of vouchers: " + totalVoucher);
+                        for (Booking b : bookingRepo.readFile()) {
+                            if (Integer.parseInt(
+                                    new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate()).split("/")[1]) > Integer
+                                            .parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getStartDate())
+                                                    .split("/")[1])) {
+                                voucherStack.push(Integer.parseInt(
+                                        new SimpleDateFormat("dd/MM/yyyy").format(b.getStartDate()).split("/")[1]));
+                            } else {
+                                voucherStack.push(Integer.parseInt(
+                                        new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate()).split("/")[1]));
+                            }
+                            if (voucherStack.firstElement() != voucherStack.lastElement()) {
+                                break;
+                            }
+                        }
+                        totalVoucher = voucherStack.size() - 1;
+                        int v10 = 0;
+                        int v20 = 0;
+                        int v50 = 0;
+                        Promotion p1 = null;
+                        Promotion p2 = null;
+                        Promotion p3 = null;
+                        if (totalVoucher < 6) {
+                            for (int i = 1; i < totalVoucher; i++) {
+                                if (i % 2 == 1) {
+                                    p1 = new Promotion(10, v10 += 1);
+                                    p2 = new Promotion(20, v20);
+                                }
+                                if (i % 2 == 0) {
+                                    p1 = new Promotion(10, v10);
+                                    p2 = new Promotion(20, v20 += 1);
+                                }
+                            }
+                        } else if (totalVoucher == 6) {
+                            p1 = new Promotion(10, 3);
+                            p2 = new Promotion(20, 2);
+                            p3 = new Promotion(50, 1);
+                        } else if (totalVoucher > 6) {
+                            v10 = 3;
+                            v20 = 2;
+                            v50 = 1;
+                            for (int i = 6; i < totalVoucher; i++) {
+                                if (i % 3 == 1) {
+                                    p1 = new Promotion(10, v10 += 1);
+                                    p2 = new Promotion(20, v20);
+                                    p3 = new Promotion(50, v50);
+                                }
+                                if (i % 3 == 2) {
+                                    p1 = new Promotion(10, v10);
+                                    p2 = new Promotion(20, v20 += 1);
+                                    p3 = new Promotion(50, v50);
+                                }
+                                if (i % 3 == 0) {
+                                    p1 = new Promotion(10, v10);
+                                    p2 = new Promotion(20, v20);
+                                    p3 = new Promotion(50, v50 += 1);
+                                }
+                            }
+                        }
+                        TreeSet<Promotion> promotions = new TreeSet<>();
+                        promotions.add(p1);
+                        promotions.add(p2);
+                        promotions.add(p3);
+                        promotions.forEach(System.out::println);
+                        // promotionRepo.writeFile(promotions);
+                        break;
+                    case 3:
+                        promotionService.save();
+                        break;
+                }
+            }
+        };
+        promotionManagementMenu.run();
     }
 }

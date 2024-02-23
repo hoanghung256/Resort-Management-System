@@ -76,14 +76,22 @@ public class Booking implements Comparable<Booking> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Booking booking)) return false;
-        return Objects.equals(getBookingID(), booking.getBookingID()) && Objects.equals(getBookDate(), booking.getBookDate()) && Objects.equals(getStartDate(), booking.getStartDate()) && Objects.equals(getEndDate(), booking.getEndDate()) && Objects.equals(getCustomerID(), booking.getCustomerID()) && Objects.equals(getServiceID(), booking.getServiceID());
+        if (this == o)
+            return true;
+        if (!(o instanceof Booking booking))
+            return false;
+        return Objects.equals(getBookingID(), booking.getBookingID())
+                && Objects.equals(getBookDate(), booking.getBookDate())
+                && Objects.equals(getStartDate(), booking.getStartDate())
+                && Objects.equals(getEndDate(), booking.getEndDate())
+                && Objects.equals(getCustomerID(), booking.getCustomerID())
+                && Objects.equals(getServiceID(), booking.getServiceID());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getBookingID(), getBookDate(), getStartDate(), getEndDate(), getCustomerID(), getServiceID());
+        return Objects.hash(getBookingID(), getBookDate(), getStartDate(), getEndDate(), getCustomerID(),
+                getServiceID());
     }
 
     @Override
@@ -98,7 +106,8 @@ public class Booking implements Comparable<Booking> {
 
     public String toStringWriteInFile() {
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-        return bookingID + "," + date.format(bookDate) + "," + date.format(startDate) + "," + date.format(endDate) + "," + customerID + "," + serviceID;
+        return bookingID + "," + date.format(bookDate) + "," + date.format(startDate) + "," + date.format(endDate) + ","
+                + customerID + "," + serviceID;
     }
 
     @Override
