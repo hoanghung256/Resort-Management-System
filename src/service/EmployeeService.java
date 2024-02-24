@@ -2,16 +2,13 @@ package service;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import model.Employee;
+import repository.EmployeeRepository;
 import repository.IEmployeeRepository;
 import utils.Validation;
 
-/**
- *
- * @author hoang hung
- */
 public class EmployeeService implements IEmployeeService {
+
     private IEmployeeRepository employeeRepo;
     private ArrayList<Employee> employees;
     static Validation val;
@@ -35,18 +32,15 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void display() {
-        System.out.println(
-                "+------------+----------------------+-----------------+-----------------+---------+--------------+---------------------------+-----------------+-----------------+----------+");
+        System.out.println("+------------+----------------------+-----------------+-----------------+---------+--------------+---------------------------+-----------------+-----------------+----------+");
         System.out.println(String.format(
                 "| %-10s | %-20s | %-15s | %-15s | %-7s | %-12s | %-25s | %-15s | %-15s | %-7s$ |", "ID", "Full name",
                 "Date of birth", "Identity number", "Gender", "Phone number", "Email", "Level", "Position", "Salary"));
-        System.out.println(
-                "+------------+----------------------+-----------------+-----------------+---------+--------------+---------------------------+-----------------+-----------------+----------+");
+        System.out.println("+------------+----------------------+-----------------+-----------------+---------+--------------+---------------------------+-----------------+-----------------+----------+");
         for (Employee employee : employees) {
             System.out.println(employee);
         }
-        System.out.println(
-                "+------------+----------------------+-----------------+-----------------+---------+--------------+---------------------------+-----------------+-----------------+----------+");
+        System.out.println("+------------+----------------------+-----------------+-----------------+---------+--------------+---------------------------+-----------------+-----------------+----------+");
     }
 
     @Override

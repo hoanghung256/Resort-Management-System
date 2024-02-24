@@ -10,6 +10,7 @@ import java.util.Objects;
  * @author hoang hung
  */
 public class Booking implements Comparable<Booking> {
+
     private String bookingID;
     private Date bookDate;
     private Date startDate;
@@ -63,7 +64,7 @@ public class Booking implements Comparable<Booking> {
     }
 
     public void setCustomerID(String customerID) {
-        customerID = customerID;
+        this.customerID = customerID;
     }
 
     public String getServiceID() {
@@ -76,10 +77,14 @@ public class Booking implements Comparable<Booking> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (!(o instanceof Booking booking))
+        }
+        if (!(o instanceof Booking)) {
             return false;
+        }
+        Booking booking = (Booking) o;
+
         return Objects.equals(getBookingID(), booking.getBookingID())
                 && Objects.equals(getBookDate(), booking.getBookDate())
                 && Objects.equals(getStartDate(), booking.getStartDate())
