@@ -313,6 +313,7 @@ public class FuramaController extends Menu<String> {
                         break;
                     case 3:
                         bookingService.createNewContract();
+                        bookingService.
                         break;
                     case 4:
                         bookingService.displayContractList();
