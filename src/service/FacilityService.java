@@ -1,14 +1,15 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import model.Facility;
+import model.House;
+import model.Room;
+import model.Villa;
+import repository.FacilityRepository;
 import repository.IFacilityRepository;
 
-/**
- *
- * @author 
- */
 public class FacilityService implements IFacilityService {
 
     private IFacilityRepository facilityRepo;
@@ -19,7 +20,7 @@ public class FacilityService implements IFacilityService {
         facilitys = facilityRepo.readFile();
     }
 
-    public LinkedHashMap<Facility, Integer> getMap(){
+    public LinkedHashMap<Facility, Integer> getMap() {
         return facilitys;
     }
 
@@ -29,22 +30,57 @@ public class FacilityService implements IFacilityService {
             System.out.println("No facilities available.");
         } else {
             System.out.println("Facility List :");
-            System.out.println("+------------+----------------------+------------+------------+------------+--------------+");
-            System.out.printf("| %-12s | %-20s | %-10s | %-12s | %-10s | %-12s |%n",
-                    "Facility ID", "Facility Name", "Area",
-                    "Rental Cost", "Max People", "Rental Type");
-            System.out.println("+------------+----------------------+------------+------------+------------+--------------+");
 
+            System.out.println("Villa :");
+            System.out.println("+--------------+----------------------+------------+-----------------+------------+--------------+------------+--------------+------------------+-------------+");
+            System.out.printf("| %-12s | %-20s | %-10s | %-15s | %-10s | %-12s | %-10s | %-12s | %-16s | %-11s |%n",
+                    "Facility ID", "Facility Name", "Area (m^2)", "Rental Cost ($)", "Max People", "Rental Type", "Standard", "Area of pool", "Number of floors", "Status");
+            System.out.println("+--------------+----------------------+------------+-----------------+------------+--------------+------------+--------------+------------------+-------------+");
             for (Map.Entry<Facility, Integer> entry : facilitys.entrySet()) {
                 Facility facility = entry.getKey();
-                int timesUsed = entry.getValue();
-                System.out.printf("| %-12s | %-20s | %-10s | %-12s | %-10s | %-12s |%n",
-                        facility.getFacilityID(), facility.getFacilityName(), facility.getArea(),
-                        facility.getPrices(), facility.getQuantityMax(), facility.getType());
-                System.out.println("Times Used: " + timesUsed);
-                System.out.println("+------------+----------------------+------------+------------+------------+--------------+");
+                String status = (entry.getValue() == 5) ? "Unavailable" : "Available";
+                if (facility.getFacilityID().startsWith("SVVL")) {
+                    Villa villa = (Villa) facility;
+                    System.out.printf("| %-12s | %-20s | %-10s | %-15s | %-10s | %-12s | %-10s | %-12s | %-16s | %-11s |%n",
+                            facility.getFacilityID(), facility.getFacilityName(), facility.getArea(),
+                            facility.getPrices(), facility.getQuantityMax(), facility.getType(), villa.getStandardRoom(), villa.getPoolArea(), villa.getNumFloor(), status);
+                    System.out.println("+--------------+----------------------+------------+-----------------+------------+--------------+------------+--------------+------------------+-------------+");
+                }
             }
 
+            System.out.println("House :");
+            System.out.println("+--------------+----------------------+------------+-----------------+------------+--------------+------------+------------------+-------------+");
+            System.out.printf("| %-12s | %-20s | %-10s | %-15s | %-10s | %-12s | %-10s | %-16s | %-11s |%n",
+                    "Facility ID", "Facility Name", "Area (m^2)", "Rental Cost ($)", "Max People", "Rental Type", "Standard", "Number of floors", "Status");
+            System.out.println("+--------------+----------------------+------------+-----------------+------------+--------------+------------+------------------+-------------+");
+            for (Map.Entry<Facility, Integer> entry : facilitys.entrySet()) {
+                Facility facility = entry.getKey();
+                String status = (entry.getValue() == 5) ? "Unavailable" : "Available";
+                if (facility.getFacilityID().startsWith("SVHO")) {
+                    House house = (House) facility;
+                    System.out.printf("| %-12s | %-20s | %-10s | %-15s | %-10s | %-12s | %-10s | %-16s | %-11s |%n",
+                            facility.getFacilityID(), facility.getFacilityName(), facility.getArea(),
+                            facility.getPrices(), facility.getQuantityMax(), facility.getType(), house.getStandardRoom(), house.getNumFloor(), status);
+                    System.out.println("+--------------+----------------------+------------+-----------------+------------+--------------+------------+------------------+-------------+");
+                }
+            }
+
+            System.out.println("Room :");
+            System.out.println("+--------------+----------------------+------------+-----------------+------------+--------------+----------------------+-------------+");
+            System.out.printf("| %-12s | %-20s | %-10s | %-15s | %-10s | %-12s | %-20s | %-11s |%n",
+                    "Facility ID", "Facility Name", "Area (m^2)", "Rental Cost ($)", "Max People", "Rental Type", "Free service", "Status");
+            System.out.println("+--------------+----------------------+------------+-----------------+------------+--------------+----------------------+-------------+");
+            for (Map.Entry<Facility, Integer> entry : facilitys.entrySet()) {
+                Facility facility = entry.getKey();
+                String status = (entry.getValue() == 5) ? "Unavailable" : "Available";
+                if (facility.getFacilityID().startsWith("SVRO")) {
+                    Room room = (Room) facility;
+                    System.out.printf("| %-12s | %-20s | %-10s | %-15s | %-10s | %-12s | %-20s | %-11s |%n",
+                            facility.getFacilityID(), facility.getFacilityName(), facility.getArea(),
+                            facility.getPrices(), facility.getQuantityMax(), facility.getType(), room.getFreeService(), status);
+                    System.out.println("+--------------+----------------------+------------+-----------------+------------+--------------+----------------------+-------------+");
+                }
+            }
         }
     }
 
@@ -59,16 +95,16 @@ public class FacilityService implements IFacilityService {
             System.out.println("No facilities available.");
         } else {
             System.out.println("Facility List Maintenance :");
-            System.out.println("+------------+----------------------+");
-            System.out.printf("| %-12s | %-20s |%n", "Facility ID", "Facility Name");
-            System.out.println("+------------+----------------------+");
+            System.out.println("+----------------+----------------------+");
+            System.out.printf("| %-14s | %-20s |%n", "Facility ID", "Facility Name");
+            System.out.println("+----------------+----------------------+");
             for (Map.Entry<Facility, Integer> entry : facilitys.entrySet()) {
                 Facility facility = entry.getKey();
                 int timesUsed = entry.getValue();
                 if (timesUsed == 5) {
-                    System.out.printf("| %-12s | %-20s |%n",
+                    System.out.printf("| %-14s | %-20s |%n",
                             facility.getFacilityID(), facility.getFacilityName());
-                    System.out.println("+------------+----------------------+");
+                    System.out.println("+----------------+----------------------+");
                     facilitys.put(facility, 0);
                 }
             }
@@ -84,10 +120,11 @@ public class FacilityService implements IFacilityService {
     public Facility findById(String id) {
         for (Map.Entry<Facility, Integer> entry : facilitys.entrySet()) {
             Facility facility = entry.getKey();
-            if (facility.getFacilityID().equals(id)){
+            if (facility.getFacilityID().equals(id)) {
                 return facility;
             }
         }
         return null;
     }
+
 }

@@ -36,7 +36,8 @@ public class Promotion implements Comparable<Promotion> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Promotion promotion)) return false;
+        if (!(o instanceof Promotion )) return false;
+        Promotion promotion = (Promotion) o;
         return getDiscountPercent() == promotion.getDiscountPercent() && getNumOfVoucher() == promotion.getNumOfVoucher();
     }
 
