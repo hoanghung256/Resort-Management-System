@@ -94,20 +94,29 @@ public class FacilityService implements IFacilityService {
         if (facilitys.isEmpty()) {
             System.out.println("No facilities available.");
         } else {
-            System.out.println("Facility List Maintenance :");
-            System.out.println("+----------------+----------------------+");
-            System.out.printf("| %-14s | %-20s |%n", "Facility ID", "Facility Name");
-            System.out.println("+----------------+----------------------+");
+            ArrayList<Facility> maintenanceList = new ArrayList<>();
             for (Map.Entry<Facility, Integer> entry : facilitys.entrySet()) {
                 Facility facility = entry.getKey();
                 int timesUsed = entry.getValue();
                 if (timesUsed == 5) {
+                    maintenanceList.add(facility);
+                }
+            }
+            if (maintenanceList.isEmpty()) {
+                System.out.println("No facilities maintenance.");
+            } else {
+                System.out.println("Facility List Maintenance :");
+                System.out.println("+----------------+----------------------+");
+                System.out.printf("| %-14s | %-20s |%n", "Facility ID", "Facility Name");
+                System.out.println("+----------------+----------------------+");
+                for (Facility facility : maintenanceList) {
                     System.out.printf("| %-14s | %-20s |%n",
                             facility.getFacilityID(), facility.getFacilityName());
                     System.out.println("+----------------+----------------------+");
                     facilitys.put(facility, 0);
                 }
             }
+
         }
     }
 
