@@ -14,13 +14,13 @@ import model.Customer;
  * @author hoang hung
  */
 public class CustomerRepository implements ICustomerRepository {
+
     public CustomerRepository() {
     }
 
     @Override
     public ArrayList<Customer> readFile() {
         String line;
-        System.out.println(path + customersPath);
         try {
             BufferedReader input = new BufferedReader(new FileReader(path + customersPath));
             ArrayList<Customer> cusList = new ArrayList<>();
@@ -31,7 +31,6 @@ public class CustomerRepository implements ICustomerRepository {
                 Customer customer = new Customer(tokString[0], tokString[1], dayOfBirth, tokString[4], gender,
                         tokString[5], tokString[6], tokString[7], tokString[8]);
                 cusList.add(customer);
-                System.out.println(customer.toString());
             }
             return cusList;
         } catch (Exception e) {

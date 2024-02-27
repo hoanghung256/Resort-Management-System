@@ -442,33 +442,4 @@ public class FuramaController extends Menu<String> {
         };
         promotionManagementMenu.run();
     }
-
-    public static void main(String[] args) {
-        FuramaController furamaController = new FuramaController();
-        Date bookDate = java.sql.Date.valueOf(furamaController.val.getAndValidDate("Enter book date: "));
-        Date startDate;
-        Date endDate;
-        while (true) {
-            startDate = java.sql.Date.valueOf(furamaController.val.getAndValidDate("Enter start date: "));
-            endDate = java.sql.Date.valueOf(furamaController.val.getAndValidDate("Enter end date: "));
-            if (startDate.compareTo(bookDate) < 0) {
-                System.out.println(startDate.compareTo(bookDate));
-                System.out.println(endDate.compareTo(bookDate));
-                System.out.println(endDate.compareTo(startDate));
-                System.out.println(startDate.compareTo(endDate));
-                break;
-            }
-            if (endDate.compareTo(startDate) > 0) {
-                System.out.println(startDate.compareTo(bookDate));
-                System.out.println(endDate.compareTo(bookDate));
-                System.out.println(endDate.compareTo(startDate));
-                System.out.println(startDate.compareTo(endDate));
-                break;
-            }
-            System.out.println(startDate.compareTo(bookDate));
-            System.out.println(endDate.compareTo(bookDate));
-            System.out.println(endDate.compareTo(startDate));
-            System.out.println(startDate.compareTo(endDate));
-        }
-    }
 }

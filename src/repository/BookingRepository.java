@@ -5,14 +5,9 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.TreeSet;
-
 import model.Booking;
-import model.Customer;
-import model.Employee;
+
 
 /**
  * @author hoang hung
