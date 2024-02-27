@@ -452,7 +452,7 @@ public class FuramaController extends Menu<String> {
 //                            }
 //                        }
 //                        bookingStack.forEach(System.out::println);
-//
+
                         promotionRepo.writeFile(promotions);
                         voucherStack.clear();
                         bookingStack.clear();
