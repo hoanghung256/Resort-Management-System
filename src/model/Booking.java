@@ -1,14 +1,11 @@
 package model;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-/**
- *
- * @author hoang hung
- */
 public class Booking implements Comparable<Booking> {
 
     private String bookingID;
@@ -25,6 +22,10 @@ public class Booking implements Comparable<Booking> {
         this.endDate = endDate;
         this.customerID = customerID;
         this.serviceID = serviceID;
+    }
+
+    public Booking() {
+
     }
 
     public String getBookingID() {
@@ -113,6 +114,18 @@ public class Booking implements Comparable<Booking> {
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
         return bookingID + "," + date.format(bookDate) + "," + date.format(startDate) + "," + date.format(endDate) + ","
                 + customerID + "," + serviceID;
+    }
+
+    public static Booking fromString(String str) throws ParseException {
+        String[] parts = str.split(",");
+        Booking booking = new Booking();
+        booking.setBookingID(parts[0]);
+        booking.setBookDate(new SimpleDateFormat("dd/MM/yyyy").parse(parts[1]));
+        booking.setStartDate(new SimpleDateFormat("dd/MM/yyyy").parse(parts[2]));
+        booking.setEndDate(new SimpleDateFormat("dd/MM/yyyy").parse(parts[3]));
+        booking.setCustomerID(parts[4]);
+        booking.setServiceID(parts[5]);
+        return booking;
     }
 
     @Override

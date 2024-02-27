@@ -3,13 +3,16 @@ package model;
 import java.util.Objects;
 
 public class Promotion implements Comparable<Promotion> {
-    String voucherName;
     int discountPercent;
-    int numOfVoucher;
+    Booking voucher;
 
-    public Promotion(int discountPercent, int numOfVoucher) {
+    public Promotion(int discountPercent, Booking voucher) {
         this.discountPercent = discountPercent;
-        this.numOfVoucher = numOfVoucher;
+        this.voucher = voucher;
+    }
+
+    public Promotion(){
+        
     }
 
     public int getDiscountPercent() {
@@ -20,17 +23,17 @@ public class Promotion implements Comparable<Promotion> {
         this.discountPercent = discountPercent;
     }
 
-    public int getNumOfVoucher() {
-        return numOfVoucher;
+    public Booking getVoucher() {
+        return voucher;
     }
 
-    public void setNumOfVoucher(int numOfVoucher) {
-        this.numOfVoucher = numOfVoucher;
+    public void setVoucher(Booking voucher) {
+        this.voucher = voucher;
     }
 
-    public void setDPAndNOV(int discountPercent, int numOfVoucher){
+    public void setDPAndNOV(int discountPercent, Booking voucher){
         this.discountPercent = discountPercent;
-        this.numOfVoucher = numOfVoucher;
+        this.voucher = voucher;
     }
 
     @Override
@@ -38,12 +41,12 @@ public class Promotion implements Comparable<Promotion> {
         if (this == o) return true;
         if (!(o instanceof Promotion )) return false;
         Promotion promotion = (Promotion) o;
-        return getDiscountPercent() == promotion.getDiscountPercent() && getNumOfVoucher() == promotion.getNumOfVoucher();
+        return getDiscountPercent() == promotion.getDiscountPercent() && getVoucher()== promotion.getVoucher();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDiscountPercent(), getNumOfVoucher());
+        return Objects.hash(getDiscountPercent(), getVoucher());
     }
 
     @Override
@@ -56,11 +59,11 @@ public class Promotion implements Comparable<Promotion> {
     }
 
     public String toStringWriteInFile() {
-        return discountPercent + "," + numOfVoucher;
+        return discountPercent + "," + voucher;
     }
 
     @Override
     public String toString() {
-        return String.format("| %-10s | %-15s | %n", discountPercent, numOfVoucher);
+        return String.format("| %-10s | %-15s | %n", discountPercent, voucher);
     }
 }

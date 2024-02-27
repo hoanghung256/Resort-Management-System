@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.TreeSet;
+import model.Booking;
 
 import model.Promotion;
 
@@ -19,7 +20,7 @@ public class PromotionRepository implements IPromotionRepository {
             TreeSet<Promotion> promotionList = new TreeSet<>();
             while ((line = input.readLine()) != null) {
                 String[] tokString = line.split(",");
-                Promotion promotion = new Promotion(Integer.parseInt(tokString[1]), Integer.parseInt(tokString[2]));
+                Promotion promotion = new Promotion(Integer.parseInt(tokString[0]), Booking.fromString(tokString[1]));
                 promotionList.add(promotion);
             }
             input.close();
