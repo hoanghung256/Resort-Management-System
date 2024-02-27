@@ -117,7 +117,7 @@ public class Booking implements Comparable<Booking> {
     }
 
     public static Booking fromString(String str) throws ParseException {
-        String[] parts = str.split(",");
+        String[] parts = str.split("\\|");
         Booking booking = new Booking();
         booking.setBookingID(parts[0]);
         booking.setBookDate(new SimpleDateFormat("dd/MM/yyyy").parse(parts[1]));
@@ -131,7 +131,7 @@ public class Booking implements Comparable<Booking> {
     @Override
     public String toString() {
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-        return String.format("| %-10s | %-15s | %-15s | %-15s | %-12s | %-12s |",
+        return String.format("%-10s | %-15s | %-15s | %-15s | %-12s | %-12s",
                 bookingID, date.format(bookDate), date.format(startDate), date.format(endDate), customerID, serviceID);
     }
 }
