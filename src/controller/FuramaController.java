@@ -1,8 +1,11 @@
 package controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.*;
 import repository.*;
@@ -49,7 +52,6 @@ public class FuramaController extends Menu<String> {
                 runPromotionManagementMenu();
                 break;
             case 6:
-                System.out.println("Goodbye!");
                 System.exit(0);
                 break;
         }
@@ -363,77 +365,99 @@ public class FuramaController extends Menu<String> {
                         }
                         break;
                     case 2:
-                        Stack<Integer> voucherStack = promotionService.getStack();
-                        Stack<Booking> bookingStack = new Stack<>();
+                        ArrayList<Booking> arrayDate = new ArrayList<>();
                         for (Booking b : bookingRepo.readFile()) {
-                            if (Integer.parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate()).split("/")[1]) > Integer.parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getStartDate()).split("/")[1])) {
-                                voucherStack.push(Integer.parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getStartDate()).split("/")[1]));
-                                bookingStack.push(b);
-                            } else {
-                                voucherStack.push(Integer.parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate()).split("/")[1]));
-                                bookingStack.push(b);
-                            }
-                            if (voucherStack.firstElement() != voucherStack.lastElement()) {
-                                break;
+                            arrayDate.add(b);
+                        }
+
+                        Collections.sort(arrayDate, (b2, b1) -> b2.getBookDate().compareTo(b1.getBookDate()));
+
+                        arrayDate.forEach(System.out::println);
+                        System.out.println("");
+
+                        int month1 = val.getAndValidInt("Input month want to arrange voucher: ");
+                        int year1 = val.getAndValidInt("Input year want to arrange voucher: ");
+
+                        ArrayList<Booking> bookingList = new ArrayList<>();
+
+                        for (Booking b : arrayDate) {
+                            if (Integer.valueOf(new SimpleDateFormat("dd/MM/yyyy").format(b.getBookDate()).split("/")[2]).equals(year1) && Integer.valueOf(new SimpleDateFormat("dd/MM/yyyy").format(b.getBookDate()).split("/")[1]).equals(month1)) {
+                                bookingList.add(b);
                             }
                         }
-                        voucherStack.pop();
-                        int totalVoucher = voucherStack.size();
-                        System.out.println("Total of vouchers: " + totalVoucher);
-                        int v10 = 0;
-                        int v20 = 0;
-                        int v50 = 0;
-                        Promotion p1 = new Promotion(10, v10);
-                        Promotion p2 = new Promotion(20, v20);
-                        Promotion p3 = new Promotion(50, v50);
-                        if (totalVoucher < 6) {
-                            for (int i = 0; i < totalVoucher; i++) {
-                                if (i % 2 == 0) {
-                                    p1.setDPAndNOV(10, v10 += 1);
-                                    p2.setDPAndNOV(20, v20);
-                                }
-                                if (i % 2 == 1) {
-                                    p1.setDPAndNOV(10, v10);
-                                    p2.setDPAndNOV(20, v20 += 1);
-                                }
-                            }
-                        } else if (totalVoucher == 6) {
-                            p1.setDPAndNOV(10, 3);
-                            p2.setDPAndNOV(20, 2);
-                            p3.setDPAndNOV(50, 1);
-                        } else if (totalVoucher > 6) {
-                            v10 = 3;
-                            v20 = 2;
-                            v50 = 1;
-                            for (int i = 6; i < totalVoucher; i++) {
-                                if (i % 3 == 0) {
-                                    p1.setDPAndNOV(10, v10 += 1);
-                                    p2.setDPAndNOV(20, v20);
-                                    p3.setDPAndNOV(50, v50);
-                                }
-                                if (i % 3 == 1) {
-                                    p1.setDPAndNOV(10, v10);
-                                    p2.setDPAndNOV(20, v20 += 1);
-                                    p3.setDPAndNOV(50, v50);
-                                }
-                                if (i % 3 == 2) {
-                                    p1.setDPAndNOV(10, v10);
-                                    p2.setDPAndNOV(20, v20);
-                                    p3.setDPAndNOV(50, v50 += 1);
-                                }
-                            }
+
+                        int numOfVoucher50 = val.getAndValidInt("Input the quantity of voucher 50%: ");
+                        int numOfVoucher20 = val.getAndValidInt("Input the quantity of voucher 20%: ");
+                        int numOfVoucher10 = val.getAndValidInt("Input the quantity of voucher 10%: ");
+
+                        Stack<Integer> voucherStack = new Stack<>();
+                        Stack<Booking> bookingStack = new Stack<>();
+                        for (int i = 0; i < numOfVoucher10; i++) {
+                            voucherStack.push(10);
+                        }
+                        for (int i = 0; i < numOfVoucher20; i++) {
+                            voucherStack.push(20);
+                        }
+                        for (int i = 0; i < numOfVoucher50; i++) {
+                            voucherStack.push(50);
                         }
                         TreeSet<Promotion> promotions = new TreeSet<>();
-                        promotions.add(p1);
-                        promotions.add(p2);
-                        promotions.add(p3);
-                        List<Promotion> promotionArrayList = promotions.stream().toList();
-                        bookingStack.pop();
-                        for (int i = 0; i < totalVoucher; i++) {
-                            System.out.println(bookingStack.get(i).getCustomerID() + "\tVoucher: " + promotionArrayList.get(i).getDiscountPercent() + "%\t " + promotionArrayList.get(i).getNumOfVoucher());
+
+                        for (Booking b : bookingList) {
+                            bookingStack.push(b);
                         }
+
+                        while (!bookingStack.empty()) {
+                            Booking booking = bookingStack.pop();
+                            int voucher = voucherStack.pop();
+                            Promotion p = new Promotion();
+                            p.setDPAndNOV(voucher, booking);
+                            promotions.add(p);
+                            System.out.println("  Booking: " + booking.getCustomerID()+ ", Voucher: " + voucher + "%");
+
+                        }
+ 
+//                        Map<Integer, Stack<Booking>> bookingYear = new HashMap<>();
+//                        Map<Integer, Map<Integer, Stack<Booking>>> bookingMonth = new HashMap<>();
+//
+//                        for (Booking b : bookingList) {
+//                            int year = Integer.parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getBookDate()).split("/")[2]);
+//                            int month = Integer.parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getBookDate()).split("/")[1]);
+//
+//                            bookingYear.computeIfAbsent(year, k -> new Stack<>()).add(b);
+//                            bookingMonth.computeIfAbsent(year, k -> new HashMap<>())
+//                                    .computeIfAbsent(month, k -> new Stack<>())
+//                                    .add(b);
+//                        }
+//
+//                        for (Map.Entry<Integer, Stack<Booking>> entry : bookingYear.entrySet()) {
+//                            Stack<Booking> booking1 = entry.getValue();
+//
+//                            int year = entry.getKey();
+//                            System.out.println(year + ": " + booking1.size() + " students");
+//                            Map<Integer, Stack<Booking>> bookingOfMonth = bookingMonth.get(year);
+//
+//                            for (Map.Entry<Integer, Stack<Booking>> monthEntry : bookingOfMonth.entrySet()) {
+//                                int month = monthEntry.getKey();
+//                                bookingStack = monthEntry.getValue();
+//
+//                                while (!bookingStack.isEmpty()) {
+//                                    Booking booking = bookingStack.pop();
+//                                    int voucher = voucherStack.pop();
+//                                    System.out.println("  Booking: " + booking.getBookingID() + ", Voucher: " + voucher + "%");
+//                                    Promotion p = new Promotion();
+//                                    p.setDPAndNOV(voucher, booking);
+//                                    promotions.add(p);
+//                                }
+//                            }
+//                        }
+//                        bookingStack.forEach(System.out::println);
+//
                         promotionRepo.writeFile(promotions);
+                        voucherStack.clear();
+                        bookingStack.clear();
                         break;
+
                     case 3:
                         promotionService.save();
                         break;
