@@ -6,13 +6,8 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
 import model.Employee;
 
-/**
- *
- * @author hoang hung
- */
 public class EmployeeRepository implements IEmployeeRepository {
     public EmployeeRepository() {
     }

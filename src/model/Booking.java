@@ -1,15 +1,13 @@
 package model;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-/**
- *
- * @author hoang hung
- */
 public class Booking implements Comparable<Booking> {
+
     private String bookingID;
     private Date bookDate;
     private Date startDate;
@@ -24,6 +22,10 @@ public class Booking implements Comparable<Booking> {
         this.endDate = endDate;
         this.customerID = customerID;
         this.serviceID = serviceID;
+    }
+
+    public Booking() {
+
     }
 
     public String getBookingID() {
@@ -63,7 +65,7 @@ public class Booking implements Comparable<Booking> {
     }
 
     public void setCustomerID(String customerID) {
-        customerID = customerID;
+        this.customerID = customerID;
     }
 
     public String getServiceID() {
@@ -76,14 +78,26 @@ public class Booking implements Comparable<Booking> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Booking booking)) return false;
-        return Objects.equals(getBookingID(), booking.getBookingID()) && Objects.equals(getBookDate(), booking.getBookDate()) && Objects.equals(getStartDate(), booking.getStartDate()) && Objects.equals(getEndDate(), booking.getEndDate()) && Objects.equals(getCustomerID(), booking.getCustomerID()) && Objects.equals(getServiceID(), booking.getServiceID());
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Booking)) {
+            return false;
+        }
+        Booking booking = (Booking) o;
+
+        return Objects.equals(getBookingID(), booking.getBookingID())
+                && Objects.equals(getBookDate(), booking.getBookDate())
+                && Objects.equals(getStartDate(), booking.getStartDate())
+                && Objects.equals(getEndDate(), booking.getEndDate())
+                && Objects.equals(getCustomerID(), booking.getCustomerID())
+                && Objects.equals(getServiceID(), booking.getServiceID());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getBookingID(), getBookDate(), getStartDate(), getEndDate(), getCustomerID(), getServiceID());
+        return Objects.hash(getBookingID(), getBookDate(), getStartDate(), getEndDate(), getCustomerID(),
+                getServiceID());
     }
 
     @Override
@@ -98,13 +112,26 @@ public class Booking implements Comparable<Booking> {
 
     public String toStringWriteInFile() {
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-        return bookingID + "," + date.format(bookDate) + "," + date.format(startDate) + "," + date.format(endDate) + "," + customerID + "," + serviceID;
+        return bookingID + "," + date.format(bookDate) + "," + date.format(startDate) + "," + date.format(endDate) + ","
+                + customerID + "," + serviceID;
+    }
+
+    public static Booking fromString(String str) throws ParseException {
+        String[] parts = str.split("\\|");
+        Booking booking = new Booking();
+        booking.setBookingID(parts[0]);
+        booking.setBookDate(new SimpleDateFormat("dd/MM/yyyy").parse(parts[1]));
+        booking.setStartDate(new SimpleDateFormat("dd/MM/yyyy").parse(parts[2]));
+        booking.setEndDate(new SimpleDateFormat("dd/MM/yyyy").parse(parts[3]));
+        booking.setCustomerID(parts[4]);
+        booking.setServiceID(parts[5]);
+        return booking;
     }
 
     @Override
     public String toString() {
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-        return String.format("| %-10s | %-15s | %-15s | %-15s | %-12s | %-12s |",
+        return String.format("%-10s | %-15s | %-15s | %-15s | %-12s | %-12s",
                 bookingID, date.format(bookDate), date.format(startDate), date.format(endDate), customerID, serviceID);
     }
 }

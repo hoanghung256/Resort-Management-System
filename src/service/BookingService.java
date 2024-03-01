@@ -10,9 +10,6 @@ import java.util.Queue;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * @author
- */
 public class BookingService implements IBookingService {
     private IBookingRepository bookingRepo;
     private TreeSet<Booking> bookings;
@@ -41,14 +38,14 @@ public class BookingService implements IBookingService {
         if (bookings.isEmpty()) {
             System.out.println("No booking found.");
         } else {
-            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            System.out.println("+------------+-----------------+-----------------+-----------------+--------------+--------------+");
             System.out.printf("| %-10s | %-15s | %-15s | %-15s | %-12s | %-12s |%n",
                     "Booking ID", "Book date", "Start date", "End date", "Customer ID", "Service ID");
-            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            System.out.println("+------------+-----------------+-----------------+-----------------+--------------+--------------+");
             for (Booking st : bookings) {
                 System.out.println(st.toString());
             }
-            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            System.out.println("+------------+-----------------+-----------------+-----------------+--------------+--------------+");
         }
     }
 
@@ -67,7 +64,7 @@ public class BookingService implements IBookingService {
             contract = null;
             serID = b.getServiceID();
             bookID = b.getBookingID();
-            if (serID.matches("^SV(VL|HO)-\\d{4}$")) {
+            if (serID.matches("^SV(VL|HO|RO)-\\d{4}$")) {
                 contractID = serID + bookID;
                 for (Contract c : contracts) {
                     if (c.getContractID().equals(contractID)) contract = c;
@@ -89,14 +86,14 @@ public class BookingService implements IBookingService {
         if (contracts.isEmpty()) {
             System.out.println("No contracts found.");
         } else {
-            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            System.out.println("+--------------+--------------+-----------------+-----------------+");
             System.out.printf("| %-12s | %-12s | %-15s | %-15s |%n",
                     "Contract ID", "Booking ID", "Pre-Payment", "Total");
-            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            System.out.println("+--------------+--------------+-----------------+-----------------+");
             for (Contract st : contracts) {
                 System.out.println(st.toString());
             }
-            System.out.println("+------------+----------------------+------------+-----------------+------------+--------------+--------------------------------+------------+----------------------+");
+            System.out.println("+--------------+--------------+-----------------+-----------------+");
         }
     }
 
