@@ -13,7 +13,7 @@ public class Validation implements IValidation {
         System.out.print(msg);
         return sc.nextLine();
     }
-    
+
     public String getAndValidValue(String msg, String regex, String cause) {
         String value;
         while (true) {
@@ -32,6 +32,7 @@ public class Validation implements IValidation {
         }
         return value;
     }
+
     // input name
     @Override
     public String getAndValidPersonName(String msg) {
@@ -166,7 +167,7 @@ public class Validation implements IValidation {
         }
         return age;
     }
-    
+
     //input email
     @Override
     public String getAndValidEmail(String msg) {
@@ -180,6 +181,7 @@ public class Validation implements IValidation {
             }
         } while (true);
     }
+
     //input service code
     @Override
     public String getAndValidServiceCode(String msg) {
@@ -194,9 +196,9 @@ public class Validation implements IValidation {
             }
         } while (true);
     }
-    
+
     //input double
-     public double getAndValidDouble(String msg) {
+    public double getAndValidDouble(String msg) {
         String d;
         do {
             try {
@@ -214,18 +216,17 @@ public class Validation implements IValidation {
             }
         } while (true);
     }
-     
-     //input int
-     public int getAndValidInt(String msg) {
+
+    //input int
+    public int getAndValidInt(String msg) {
         String d;
         do {
             try {
                 d = getAndValidValue(msg, "[\\d]+", "Invalid input. Please enter again.");
 
-                if (Integer.parseInt(d) <= 0) {
+                if (Integer.parseInt(d) < 0) {
                     throw new Exception("Value must a positive number");
                 }
-
                 return Integer.parseInt(d);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid.");
@@ -233,5 +234,26 @@ public class Validation implements IValidation {
                 System.out.println(ex.getMessage());
             }
         } while (true);
+    }
+
+    public boolean demand(String msg) {
+        boolean isDemand = false;
+        System.out.println(msg);
+        String choose = sc.nextLine();
+
+        while (!choose.equals("Y") && !choose.equals("N")) {
+            System.out.println("Invalid input. Please enter 'Y' or 'N'.");
+            System.out.println(msg);
+            choose = sc.nextLine();
+        }
+        switch (choose) {
+            case "Y":
+                isDemand = true;
+                break;
+            case "N":
+                isDemand = false;
+                break;
+        }
+        return isDemand;
     }
 }

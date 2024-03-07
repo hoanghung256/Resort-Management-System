@@ -29,7 +29,6 @@ public class PromotionRepository implements IPromotionRepository {
             System.out.println(e.getMessage());
             return null;
         }
-
     }
 
     @Override

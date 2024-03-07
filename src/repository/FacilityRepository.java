@@ -14,7 +14,6 @@ public class FacilityRepository implements IFacilityRepository {
     @Override
     public LinkedHashMap<Facility, Integer> readFile() {
         LinkedHashMap<Facility, Integer> facilityMap = new LinkedHashMap<>();
-
         String line;
         try {
             BufferedReader input = new BufferedReader(new FileReader(path + facilitiesPath));
@@ -60,13 +59,11 @@ public class FacilityRepository implements IFacilityRepository {
             System.out.println(e.getMessage());
             return null;
         }
-
         return facilityMap;
     }
 
     @Override
     public void writeFile(LinkedHashMap<Facility, Integer> facilities) {
-
         try {
             PrintWriter pr = new PrintWriter(path + facilitiesPath);
             for (Facility facility : facilities.keySet()) {

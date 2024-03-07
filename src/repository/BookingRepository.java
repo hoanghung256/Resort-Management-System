@@ -9,9 +9,6 @@ import java.util.TreeSet;
 import model.Booking;
 
 
-/**
- * @author hoang hung
- */
 public class BookingRepository implements IBookingRepository {
     public BookingRepository() {
     }
@@ -25,7 +22,7 @@ public class BookingRepository implements IBookingRepository {
             while((line = input.readLine())!= null){
                 String[] tokString = line.split(",");
                 DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-                Booking booking = new Booking(tokString[0], date.parse(tokString[1]), date.parse(tokString[2]), date.parse(tokString[3]), tokString[4], tokString[5]);
+                Booking booking = new Booking(tokString[0], date.parse(tokString[1]), date.parse(tokString[2]), date.parse(tokString[3]), tokString[4]);
                 bookList.add(booking);
             }
             return bookList;

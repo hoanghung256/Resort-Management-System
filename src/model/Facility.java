@@ -9,7 +9,6 @@ public abstract class Facility {
     private double prices;
     private int quantityMax;
     private String type;
-    //new variable
 
     public Facility(String facilityID, String facilityName, double area, double prices, int quantityMax, String type) {
         this.facilityID = facilityID;
