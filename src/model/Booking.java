@@ -100,9 +100,8 @@ public class Booking implements Comparable<Booking> {
 
     public String toStringWriteInFile() {
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-        return bookingID + "," + date.format(bookDate) + "," + date.format(startDate) + "," + date.format(endDate) + ","
-                + customerID ;
-    }
+        return String.format("| %-10s | %-15s | %-15s | %-15s | %-12s |",
+                bookingID, date.format(bookDate), date.format(startDate), date.format(endDate), customerID);    }
 
     public static Booking fromString(String str) throws ParseException {
         String[] parts = str.split("\\|");

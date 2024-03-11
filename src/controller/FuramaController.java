@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 import model.*;
 import repository.*;
 import service.*;
@@ -248,71 +249,9 @@ public class FuramaController extends Menu<String> {
             @Override
             public void execute(int choice) {
                 switch (choice) {
-//                    case 1:
-//                        String bookID = "BK" + (bookingRepo.readFile().size() + 1);
-//                        Date bookDate = java.sql.Date.valueOf(LocalDateTime.now().toLocalDate());
-//                        Date startDate;
-//                        Date endDate;
-//                        while (true) {
-//                            startDate = java.sql.Date.valueOf(val.getAndValidDate("Enter start date: "));
-//                            if (startDate.compareTo(bookDate) > 0) {
-//                                break;
-//                            } else {
-//                                System.out.println("Invalid date range. Please enter again.");
-//                            }
-//                        }
-//                        while (true) {
-//                            endDate = java.sql.Date.valueOf(val.getAndValidDate("Enter end date: "));
-//                            if (endDate.compareTo(startDate) >= 0) {
-//                                break;
-//                            } else {
-//                                System.out.println("Invalid date range. Please enter again.");
-//                            }
-//                        }
-//
-//                        String cusID;
-//                        do {
-//                            cusID = val.getAndValidCusId("Enter available customer ID: ");
-//                            if (customerService.findById(cusID) != null) {
-//                                break;
-//                            }
-//                        } while (customerService.findById(cusID) == null);
-//                        String serID;
-//                        Facility facility = null;
-//                        do {
-//                            serID = val.getAndValidServiceCode("Enter available service ID: ");
-//                            if (facilityService.findById(serID) != null) {
-//                                facility = facilityService.findById(serID);
-//                                break;
-//                            }
-//                        } while (facilityService.findById(serID) == null);
-//
-//                        if (facilityService.getMap().containsKey(facility)) {
-//                            for (Booking b : bookingRepo.readFile()) {
-//                                if (b.getServiceID().equals(facility != null ? facility.getFacilityID() : null)) {
-//                                    if (Integer.parseInt(startDate.toString().split("-")[1]) > Integer.parseInt(
-//                                            new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate()).split("/")[1])
-//                                            || startDate.toString().split("-")[1].equals("01")
-//                                            && new SimpleDateFormat("dd/MM/yyyy").format(b.getEndDate())
-//                                                    .split("/")[1].equals("12")) {
-//                                        facility.setQuantityUsing(0);
-//                                        break;
-//                                    }
-//                                }
-//                            }
-//                            if (facilityService.getMap().get(facility) <= 4) {
-//                                facilityService.getMap().put(facility, facilityService.getMap().get(facility) + 1);
-//                            }
-//                        }
-//                        Booking newBooking = new Booking(bookID, bookDate, startDate, endDate, cusID, serID);
-//                        bookingService.add(newBooking);
-//                        facilityService.save();
-//                        System.out.println("Add new Booking successfully!");
-//                        break;
                     case 1:
-
-                        String bookID = "BK" + (bookingRepo.readFile().size() + 1);
-                        String contractID = "CT" + (contractRepo.readFile().size() + 1);
+                        String bookID = "BK" + String.format("%04d", bookingRepo.readFile().size() + 1);
+                        String contractID = "CT" + String.format("%04d", contractRepo.readFile().size() + 1);
                         //input date
                         Date bookDate = java.sql.Date.valueOf(LocalDateTime.now().toLocalDate());
                         Date startDate;
@@ -351,6 +290,7 @@ public class FuramaController extends Menu<String> {
 
                         ArrayList<Facility> facilityList = new ArrayList<>();
                         ArrayList<Facility> list = new ArrayList<>();
+                        ArrayList<Facility> exlist = new ArrayList<>();
 
                         String type = val.getAndValidValue("Input type service you want to choose (SVVL(villa), SVHO(house), SVRO(room)): ", "^SV(VL|HO|RO)", "Invalid, enter again.");
 
@@ -362,85 +302,93 @@ public class FuramaController extends Menu<String> {
                                 if (remainingCapacity > 0) {
                                     for (int i = 0; i < remainingCapacity; i++) {
                                         facilityList.add(facility);
+                                        exlist.add(facility);
                                     }
                                 }
                             }
                         }
                         Collections.sort(facilityList, Comparator.comparing(Facility::getQuantityMax).reversed());
+                        Collections.sort(exlist, Comparator.comparing(Facility::getQuantityMax).reversed());
 
-//                        int i = 0;
+                        Date date1 = new Date(startDate.getYear() - 1900, startDate.getMonth() - 1, startDate.getDay()); // Lưu ý: Năm phải trừ đi 1900, tháng bắt đầu từ 0
+                        Date date2 = new Date(endDate.getYear() - 1900, endDate.getMonth() - 1, endDate.getDay());
+
+                        long diffInMillies = Math.abs(date2.getTime() - date1.getTime());
+                        long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) + 1;
                         do {
                             list.clear();
                             quantityPerson = extraQuantityPerson;
                             moneyTarget = extraMoneytarger;
                             prePayment = 0;
-//                            for (Facility fa : extraFacility) {
-//                                facilityList.add(fa);
-//                            }
-//
-//                            extraFacility.clear();
+                            int x = 0;
+                            for (Facility s : facilityList) {
+                                x += s.getQuantityMax();
+                            }
+                            if (x < 20) {
+                                for (Facility s : exlist) {
+                                    facilityList.add(s);
+                                }
+                            }
+
                             int i = 0;
                             do {
                                 if (i >= facilityList.size()) {
-                                    break; // Thoát vòng lặp nếu không còn phần tử trong facilityList
+                                    break;
                                 }
                                 Facility currentFacility = facilityList.get(i);
                                 if (quantityPerson < currentFacility.getQuantityMax()) {
-                                    // Nếu quantityPerson nhỏ hơn quantityMax của currentFacility
                                     for (int j = 0; j < facilityList.size(); j++) {
                                         Facility a = facilityList.get(j);
-                                        if (quantityPerson < a.getQuantityMax() && quantityPerson >= 0) {
+                                        if (quantityPerson >= a.getQuantityMax()) {
                                             quantityPerson -= a.getQuantityMax();
                                             moneyTarget -= a.getPrices();
                                             prePayment += a.getPrices();
                                             list.add(a);
                                             facilityList.remove(a);
-                                            j--; // Giảm chỉ số vì đã loại bỏ một phần tử
+                                            j--;
                                         }
                                     }
                                 } else {
-                                    // Nếu quantityPerson lớn hơn hoặc bằng quantityMax của currentFacility
                                     quantityPerson -= currentFacility.getQuantityMax();
                                     moneyTarget -= currentFacility.getPrices();
                                     prePayment += currentFacility.getPrices();
                                     list.add(currentFacility);
                                     facilityList.remove(currentFacility);
                                 }
-//                                i++; // Tăng chỉ số i
                             } while (quantityPerson > 0 && moneyTarget > 0);
-//                            extraFacility.forEach(System.out::println);
-//                            System.out.println("");
+//                            facilityService.processDuplicateIds(list);
+                            Collections.sort(list, Comparator.comparing(Facility::getFacilityID));
                             for (Facility a : list) {
                                 System.out.printf("| %-12s | %-10s | %-5s | %-6s |%n", a.getFacilityID(), a.getFacilityName(), a.getQuantityMax(), a.getPrices());
                             }
-                            System.out.printf("Total prices: %f$ %n", prePayment);
+                            System.out.printf("Total prices in 1 day: %.2f$ %n", prePayment);
 
-                            System.out.println("-----");
-                            for (Facility f : facilityList) {
-                                System.out.println(f.getFacilityID());
-                            }
-                            System.out.println("-----");
                         } while (!val.demand("Do you agree with this suggestion (Y/N)?"));
+
+                        double totalPrice = prePayment * diffInDays;
 
                         Booking newBooking = new Booking(bookID, bookDate, startDate, endDate, cusID);
                         bookingService.add(newBooking);
-                        contractService.add(new Contract(contractID, cusID, bookID, prePayment, 0));
+                        contractService.add(new Contract(contractID, cusID, bookID, prePayment, 0, totalPrice));
                         facilityService.save();
                         contractService.save();
+                        bookingService.save();
                         System.out.println("Add new Booking successfully!");
 
                         break;
                     case 2:
                         bookingService.display();
                         break;
-                    case 3:
-                        bookingService.createNewContract();
-                        break;
+//                    case 3:
+//                        bookingService.createNewContract();
+//                        break;
                     case 4:
                         contractService.display();
                         break;
                     case 5:
-                        bookingService.updateContract();
+                        contractService.display();
+                        contractService.deleteContractByID();
+                        contractService.save();
                         break;
                     case 6:
                         contractService.save();
@@ -460,8 +408,8 @@ public class FuramaController extends Menu<String> {
         CustomerService customerService = new CustomerService(customerRepo);
         IBookingRepository bookingRepo = new BookingRepository();
         BookingService bookingService = new BookingService(bookingRepo);
-        IFacilityRepository facilityRepo = new FacilityRepository();
-        FacilityService facilityService = new FacilityService(facilityRepo);
+        IContractReposibility contractRepo = new ContractPepository();
+        ContractService contractService = new ContractService(contractRepo);
         IPromotionRepository promotionRepo = new PromotionRepository();
         PromotionService promotionService = new PromotionService(promotionRepo);
 
@@ -487,12 +435,24 @@ public class FuramaController extends Menu<String> {
                         break;
                     case 2:
                         ArrayList<Booking> arrayDate = new ArrayList<>();
-                        for (Booking b : bookingRepo.readFile()) {
-                            arrayDate.add(b);
+                        HashSet<String> voucherBookingIDs = new HashSet<>();
+
+                        if (promotionRepo.readFile().isEmpty()) {
+                            System.out.println("No promotion.");
+                            return;
+                        }
+                        for (Promotion pro : promotionRepo.readFile()) {
+                            voucherBookingIDs.add(pro.getVoucher().getBookingID());
                         }
 
-                        Collections.sort(arrayDate, (b1, b2) -> b1.getBookDate().compareTo(b2.getBookDate()));
+                        for (Booking b : bookingRepo.readFile()) {
+                            if (!voucherBookingIDs.contains(b.getBookingID())) {
+                                arrayDate.add(b);
+                            }
+                        }
 
+//                        Collections.sort(arrayDate, (b1, b2) -> b1.getBookDate().compareTo(b2.getBookDate()));
+                        Collections.sort(arrayDate, Comparator.comparing(Booking::getBookDate).thenComparing(Booking::getEndDate));
                         System.out.println("+------------+-----------------+-----------------+-----------------+--------------+--------------+");
                         System.out.printf("| %-10s | %-15s | %-15s | %-15s | %-12s | %-12s |%n",
                                 "Booking ID", "Book date", "Start date", "End date", "Customer ID", "Service ID");
@@ -544,56 +504,34 @@ public class FuramaController extends Menu<String> {
                                 "Booking ", "Voucher ");
                         System.out.println("+------------+----------+");
                         TreeSet<Promotion> promotions = new TreeSet<>();
+                        Booking booking = new Booking();
+                        int voucher = 0;
+                        Promotion p = new Promotion();
 
                         while (!bookingStack.isEmpty()) {
-                            Booking booking = bookingStack.poll();
-                            int voucher = voucherStack.poll();
-                            Promotion p = new Promotion();
+                            booking = bookingStack.poll();
+                            voucher = voucherStack.poll();
+                            p = new Promotion(voucher, booking);
                             p.setDPAndNOV(voucher, booking);
                             promotions.add(p);
+
                             System.out.printf("| %-10s | %-8s |%n",
                                     booking.getCustomerID(), voucher + "%");
                             System.out.println("+------------+----------+");
+                            promotionService.add(p);
                         }
-
-//                        Map<Integer, Stack<Booking>> bookingYear = new HashMap<>();
-//                        Map<Integer, Map<Integer, Stack<Booking>>> bookingMonth = new HashMap<>();
-//
-//                        for (Booking b : bookingList) {
-//                            int year = Integer.parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getBookDate()).split("/")[2]);
-//                            int month = Integer.parseInt(new SimpleDateFormat("dd/MM/yyyy").format(b.getBookDate()).split("/")[1]);
-//
-//                            bookingYear.computeIfAbsent(year, k -> new Stack<>()).add(b);
-//                            bookingMonth.computeIfAbsent(year, k -> new HashMap<>())
-//                                    .computeIfAbsent(month, k -> new Stack<>())
-//                                    .add(b);
-//                        }
-//
-//                        for (Map.Entry<Integer, Stack<Booking>> entry : bookingYear.entrySet()) {
-//                            Stack<Booking> booking1 = entry.getValue();
-//
-//                            int year = entry.getKey();
-//                            System.out.println(year + ": " + booking1.size() + " students");
-//                            Map<Integer, Stack<Booking>> bookingOfMonth = bookingMonth.get(year);
-//
-//                            for (Map.Entry<Integer, Stack<Booking>> monthEntry : bookingOfMonth.entrySet()) {
-//                                int month = monthEntry.getKey();
-//                                bookingStack = monthEntry.getValue();
-//
-//                                while (!bookingStack.isEmpty()) {
-//                                    Booking booking = bookingStack.pop();
-//                                    int voucher = voucherStack.pop();
-//                                    System.out.println("  Booking: " + booking.getBookingID() + ", Voucher: " + voucher + "%");
-//                                    Promotion p = new Promotion();
-//                                    p.setDPAndNOV(voucher, booking);
-//                                    promotions.add(p);
-//                                }
-//                            }
-//                        }
-//                        bookingStack.forEach(System.out::println);
-                        promotionRepo.writeFile(promotions);
+                        for (Contract b : contractRepo.readFile()) {
+                            if (b.getBookingID().equals(booking.getBookingID())) {
+                                Contract con = b;
+                                con.setVoucher(voucher);
+                                con.setTotalAmount(con.getTotalAmount() - (con.getTotalAmount() * voucher / 100));
+                            }
+                        }
+//                        promotionRepo.writeFile(promotions);
                         voucherStack.clear();
                         bookingStack.clear();
+                        contractService.save();
+                        promotionService.save();
                         break;
 
                     case 3:
@@ -606,5 +544,13 @@ public class FuramaController extends Menu<String> {
     }
 
     public static void main(String[] args) {
+        Date date1 = new Date(2023 - 1900, 5 - 1, 15); // Lưu ý: Năm phải trừ đi 1900, tháng bắt đầu từ 0
+        Date date2 = new Date(2023 - 1900, 5 - 1, 15);
+
+        // Tính toán khoảng cách giữa hai ngày
+        long diffInMillies = Math.abs(date2.getTime() - date1.getTime());
+        long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) + 1;
+        System.out.println("Khoảng cách giữa " + date1 + " và " + date2 + " là " + diffInDays + " ngày.");
+
     }
 }

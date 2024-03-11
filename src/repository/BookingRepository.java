@@ -20,7 +20,7 @@ public class BookingRepository implements IBookingRepository {
             BufferedReader input = new BufferedReader(new FileReader(path+ bookingsPath));
             TreeSet<Booking> bookList = new TreeSet<>();
             while((line = input.readLine())!= null){
-                String[] tokString = line.split(",");
+                String[] tokString = line.split("\\|");
                 DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
                 Booking booking = new Booking(tokString[0], date.parse(tokString[1]), date.parse(tokString[2]), date.parse(tokString[3]), tokString[4]);
                 bookList.add(booking);
@@ -45,4 +45,5 @@ public class BookingRepository implements IBookingRepository {
             System.out.println(e.getMessage());
         }
     }
+
 }

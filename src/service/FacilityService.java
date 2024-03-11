@@ -1,13 +1,13 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import model.Facility;
 import model.House;
 import model.Room;
 import model.Villa;
-import repository.FacilityRepository;
 import repository.IFacilityRepository;
 
 public class FacilityService implements IFacilityService {
@@ -136,10 +136,25 @@ public class FacilityService implements IFacilityService {
         return null;
     }
 
-    public static void main(String[] args) {
-        IFacilityRepository facilityRepo = new FacilityRepository();
-        FacilityService facilityService = new FacilityService(facilityRepo);
-        facilityService.display();
+    public void count(ArrayList<Facility> facilityList) {
+        Map<String, ArrayList<Facility>> groupByService = new HashMap<>();
+
+        for (Facility x : facilityList) {
+            groupByService.computeIfAbsent(x.getFacilityID(), k -> new ArrayList<>()).add(x);
+        }
+
+        for (Map.Entry<String, ArrayList<Facility>> entry : groupByService.entrySet()) {
+            String id = entry.getKey();
+            ArrayList<Facility> sameID = entry.getValue();
+
+            System.out.println(id + ": " + sameID.size() + " students");
+
+            for (Facility student : sameID) {
+                System.out.println("  " + student);
+            }
+        }
+//        System.out.printf("| %-12s | %-10s | %-5s | %-6s |%n", a.getFacilityID(), a.getFacilityName(), a.getQuantityMax(), a.getPrices());
+
     }
 
 }

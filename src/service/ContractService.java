@@ -1,6 +1,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import model.Contract;
 import repository.IContractReposibility;
 import utils.Validation;
@@ -14,6 +15,10 @@ public class ContractService implements IContractService {
     public ContractService(IContractReposibility contractRepo) {
         this.contractRepo = contractRepo;
         contracts = contractRepo.readFile();
+    }
+
+    public ContractService() {
+
     }
 
     public ArrayList<Contract> getContracts() {
@@ -34,14 +39,29 @@ public class ContractService implements IContractService {
         if (contracts.isEmpty()) {
             System.out.println("No contracts found.");
         } else {
-            System.out.println("+--------------+--------------+-----------------+-----------------+");
-            System.out.printf("| %-12s | %-12s | %-12s | %-15s | %-15s |%n",
-                    "Contract ID", "Customer ID","Booking ID", "Pre-Payment", "Total");
-            System.out.println("+--------------+--------------+-----------------+-----------------+");
+            System.out.println("+--------------+--------------+--------------+-------------+----------+-------------+");
+            System.out.printf("| %-12s | %-12s | %-12s | %-11s | %-8s | %-11s |%n",
+                    "Contract ID", "Customer ID", "Booking ID", "Pre-Payment", "Voucher", "Total");
+            System.out.println("+--------------+--------------+--------------+-------------+----------+-------------+");
             for (Contract st : contracts) {
                 System.out.println(st.toString());
             }
-            System.out.println("+--------------+--------------+-----------------+-----------------+");
+            System.out.println("+--------------+--------------+--------------+-------------+----------+-------------+");
+        }
+    }
+
+    public void deleteContractByID() {
+        if (contracts.isEmpty()) {
+            System.out.println("No contracts found.");
+        } else {
+            String contractID = val.getAndValidValue("Input the contract ID want to find: ", "^CT[0-9]{4}$", "Invalid contract ID. Please enter a valid contract ID.");
+            ArrayList<Contract> listRemove = new ArrayList<>();
+            for (Contract st : contracts) {
+                if (contractID.equals(st.getContractID())) {
+                    listRemove.add(st);
+                }
+            }
+            contracts.removeAll(listRemove);
         }
     }
 

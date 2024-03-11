@@ -19,7 +19,7 @@ public class ContractPepository implements IContractReposibility {
             ArrayList<Contract> conList = new ArrayList<>();
             while ((line = input.readLine()) != null) {
                 String[] tokString = line.split(",");
-                Contract contract = new Contract(tokString[0], tokString[1], tokString[2], Double.parseDouble(tokString[3].trim()), Double.parseDouble(tokString[4].trim()));
+                Contract contract = new Contract(tokString[0], tokString[1], tokString[2], Double.parseDouble(tokString[3].trim()),Integer.parseInt(tokString[4].trim()), Double.parseDouble(tokString[5].trim()));
                 conList.add(contract);
             }
             return conList;
@@ -34,12 +34,18 @@ public class ContractPepository implements IContractReposibility {
         try {
             PrintWriter w = new PrintWriter(path + contractsPath);
             for (Contract contract : contracts) {
-                String line = contract.getContractID() + "," + contract.getCusID() + "," + contract.getBookingID() + "," + contract.getPrePayment() + "," + contract.getTotalAmount();
+                String line = contract.getContractID() + "," + contract.getCusID() + "," + contract.getBookingID() + "," + contract.getPrePayment() + "," + contract.getVoucher()+","+ contract.getTotalAmount();
                 w.println(line);
             }
             w.close();
         } catch (Exception e) {
             e.getMessage();
         }
+    }
+    public static void main(String[] args) {
+        ContractPepository contr = new ContractPepository();
+        contr.readFile();
+  
+
     }
 }
