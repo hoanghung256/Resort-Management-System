@@ -2,10 +2,6 @@ package service;
 
 import model.Booking;
 
-/**
- *
- * @author hoang hung
- */
 public interface IBookingService extends Service<Booking> {
     @Override
     void add(Booking entity);

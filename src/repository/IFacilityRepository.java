@@ -1,13 +1,8 @@
 package repository;
 
 import java.util.LinkedHashMap;
-
 import model.Facility;
 
-/**
- *
- * @author hoang hung
- */
 public interface IFacilityRepository extends Repository<Facility, LinkedHashMap<Facility, Integer>> {
     final String facilitiesPath = "\\data\\facility.csv";
 

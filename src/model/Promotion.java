@@ -59,7 +59,7 @@ public class Promotion implements Comparable<Promotion> {
     }
 
     public String toStringWriteInFile() {
-        return discountPercent + "," + voucher;
+        return discountPercent + "," + voucher.toStringWriteInFile();
     }
 
     @Override

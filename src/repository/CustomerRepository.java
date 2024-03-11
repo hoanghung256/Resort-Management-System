@@ -25,7 +25,7 @@ public class CustomerRepository implements ICustomerRepository {
             BufferedReader input = new BufferedReader(new FileReader(path + customersPath));
             ArrayList<Customer> cusList = new ArrayList<>();
             while ((line = input.readLine()) != null) {
-                String[] tokString = line.split(",");
+                String[] tokString = line.split(", ");
                 Date dayOfBirth = new SimpleDateFormat("dd/MM/yyyy").parse(tokString[2]);
                 boolean gender = tokString[3].equals("Male") ? true : false;
                 Customer customer = new Customer(tokString[0], tokString[1], dayOfBirth, tokString[4], gender,
