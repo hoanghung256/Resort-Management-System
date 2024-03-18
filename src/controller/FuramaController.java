@@ -315,10 +315,11 @@ public class FuramaController extends Menu<String> {
 
                         long diffInMillies = Math.abs(date2.getTime() - date1.getTime());
                         long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) + 1;
+                        ArrayList<String> listString = new ArrayList<>();
                         do {
                             list.clear();
                             quantityPerson = extraQuantityPerson;
-                            moneyTarget = extraMoneytarger;
+                            moneyTarget = extraMoneytarger / diffInDays;
                             prePayment = 0;
                             int x = 0;
                             for (Facility s : facilityList) {
@@ -356,20 +357,31 @@ public class FuramaController extends Menu<String> {
                                     facilityList.remove(currentFacility);
                                 }
                             } while (quantityPerson > 0 && moneyTarget > 0);
-//                            facilityService.processDuplicateIds(list);
+
                             Collections.sort(list, Comparator.comparing(Facility::getFacilityID));
-                            for (Facility a : list) {
-                                System.out.printf("| %-12s | %-10s | %-5s | %-6s |%n", a.getFacilityID(), a.getFacilityName(), a.getQuantityMax(), a.getPrices());
+                            Map<String, ArrayList<Facility>> groupFacility = new HashMap<>();
+                            for (Facility k : list) {
+                                groupFacility.computeIfAbsent(k.getFacilityID(), h -> new ArrayList<>()).add(k);
                             }
+                            for (Map.Entry<String, ArrayList<Facility>> entry : groupFacility.entrySet()) {
+                                ArrayList<Facility> facilitys = entry.getValue();
+                                System.out.printf("| %-12s | %-10s | %-5s | %-6s | x %d %n", facilitys.get(0).getFacilityID(), facilitys.get(0).getFacilityName(), facilitys.get(0).getQuantityMax(), facilitys.get(0).getPrices(), facilitys.size());
+                                listString.add(facilitys.get(0).getFacilityID());
+                            }
+//
+//                            for (Facility a : list) {
+//                                System.out.printf("| %-12s | %-10s | %-5s | %-6s |%n", a.getFacilityID(), a.getFacilityName(), a.getQuantityMax(), a.getPrices());
+//                            }
                             System.out.printf("Total prices in 1 day: %.2f$ %n", prePayment);
 
                         } while (!val.demand("Do you agree with this suggestion (Y/N)?"));
+                        double deposit = val.getAndValidDouble("Input the deposit: ");
 
                         double totalPrice = prePayment * diffInDays;
 
                         Booking newBooking = new Booking(bookID, bookDate, startDate, endDate, cusID);
                         bookingService.add(newBooking);
-                        contractService.add(new Contract(contractID, cusID, bookID, prePayment, 0, totalPrice));
+                        contractService.add(new Contract(contractID, cusID, bookID, listString, prePayment, 0, totalPrice, deposit));
                         facilityService.save();
                         contractService.save();
                         bookingService.save();
@@ -422,8 +434,6 @@ public class FuramaController extends Menu<String> {
                 switch (choice) {
                     case 1:
                         Customer c = new Customer();
-                        Facility f;
-
                         System.out.println("+------------+-------------+----------------------+");
                         System.out.printf("| %-10s | %-11s | %-20s |%n",
                                 "Time", "Customer ID", "Name");
@@ -438,23 +448,20 @@ public class FuramaController extends Menu<String> {
                         break;
                     case 2:
                         ArrayList<Booking> arrayDate = new ArrayList<>();
-                        HashSet<String> voucherBookingIDs = new HashSet<>();
-
-                        if (promotionRepo.readFile().isEmpty()) {
-                            System.out.println("No promotion.");
-                            return;
-                        }
-                        for (Promotion pro : promotionRepo.readFile()) {
-                            voucherBookingIDs.add(pro.getVoucher().getBookingID());
-                        }
+                        TreeSet<Promotion> arrayPromo = promotionRepo.readFile(); 
 
                         for (Booking b : bookingRepo.readFile()) {
-                            if (!voucherBookingIDs.contains(b.getBookingID())) {
+                            boolean hasPromo = false;
+                            for (Promotion p : arrayPromo) {
+                                if (b.getBookingID().equalsIgnoreCase(p.getVoucher().getBookingID())) {
+                                    hasPromo = true; 
+                                    break;
+                                }
+                            }
+                            if (!hasPromo) {
                                 arrayDate.add(b);
                             }
                         }
-
-//                        Collections.sort(arrayDate, (b1, b2) -> b1.getBookDate().compareTo(b2.getBookDate()));
                         Collections.sort(arrayDate, Comparator.comparing(Booking::getBookDate).thenComparing(Booking::getEndDate));
                         System.out.println("+------------+-----------------+-----------------+-----------------+--------------+--------------+");
                         System.out.printf("| %-10s | %-15s | %-15s | %-15s | %-12s | %-12s |%n",
@@ -509,28 +516,25 @@ public class FuramaController extends Menu<String> {
                         TreeSet<Promotion> promotions = new TreeSet<>();
                         Booking booking = new Booking();
                         int voucher = 0;
-                        Promotion p = new Promotion();
 
                         while (!bookingStack.isEmpty()) {
                             booking = bookingStack.poll();
                             voucher = voucherStack.poll();
-                            p = new Promotion(voucher, booking);
+                            Promotion p = new Promotion(voucher, booking);
                             p.setDPAndNOV(voucher, booking);
                             promotions.add(p);
 
                             System.out.printf("| %-10s | %-8s |%n",
                                     booking.getCustomerID(), voucher + "%");
                             System.out.println("+------------+----------+");
-                            promotionService.add(p);
-                        }
-                        for (Contract b : contractRepo.readFile()) {
-                            if (b.getBookingID().equals(booking.getBookingID())) {
-                                Contract con = b;
-                                con.setVoucher(voucher);
-                                con.setTotalAmount(con.getTotalAmount() - (con.getTotalAmount() * voucher / 100));
+                            for (Contract b : contractService.getContracts()) {
+                                if (b.getBookingID().equals(booking.getBookingID())) {
+                                    b.setVoucher(p.getDiscountPercent());
+                                    b.setTotalAmount(b.getTotalAmount() - (b.getTotalAmount() * p.getDiscountPercent() / 100));
+                                }
                             }
                         }
-//                        promotionRepo.writeFile(promotions);
+
                         voucherStack.clear();
                         bookingStack.clear();
                         contractService.save();
@@ -546,14 +550,4 @@ public class FuramaController extends Menu<String> {
         promotionManagementMenu.run();
     }
 
-    public static void main(String[] args) {
-        Date date1 = new Date(2023 - 1900, 5 - 1, 15); // Lưu ý: Năm phải trừ đi 1900, tháng bắt đầu từ 0
-        Date date2 = new Date(2023 - 1900, 5 - 1, 15);
-
-        // Tính toán khoảng cách giữa hai ngày
-        long diffInMillies = Math.abs(date2.getTime() - date1.getTime());
-        long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) + 1;
-        System.out.println("Khoảng cách giữa " + date1 + " và " + date2 + " là " + diffInDays + " ngày.");
-
-    }
 }

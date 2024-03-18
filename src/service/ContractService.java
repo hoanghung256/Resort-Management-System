@@ -1,7 +1,6 @@
 package service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import model.Contract;
 import repository.IContractReposibility;
 import utils.Validation;
