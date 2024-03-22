@@ -2,11 +2,13 @@ package service;
 
 import java.util.ArrayList;
 import model.Contract;
+import repository.ContractPepository;
 import repository.IContractReposibility;
 import utils.Validation;
 
 public class ContractService implements IContractService {
 
+    private FacilityService fase = new FacilityService();
     private IContractReposibility contractRepo;
     private ArrayList<Contract> contracts;
     private Validation val = new Validation();
@@ -38,16 +40,22 @@ public class ContractService implements IContractService {
         if (contracts.isEmpty()) {
             System.out.println("No contracts found.");
         } else {
-            System.out.println("+--------------+--------------+--------------+-------------+----------+-------------+");
-            System.out.printf("| %-12s | %-12s | %-12s | %-11s | %-8s | %-11s |%n",
-                    "Contract ID", "Customer ID", "Booking ID", "Pre-Payment", "Voucher", "Total");
-            System.out.println("+--------------+--------------+--------------+-------------+----------+-------------+");
+            System.out.printf("+--------------+--------------+--------------+--------------------------------+-------------+----------+-------------+-------------+%n");
+            System.out.printf("| %-12s | %-12s | %-12s | %-30s | %-11s | %-8s | %-11s | %-11s |%n",
+                    "Contract ID", "Customer ID", "Booking ID", "Facility Service", "Pre-Payment", "Voucher", "Total", "Deposit");
+            System.out.printf("+--------------+--------------+--------------+--------------------------------+-------------+----------+-------------+-------------+%n");
             for (Contract st : contracts) {
                 System.out.println(st.toString());
+                System.out.printf("+--------------+--------------+--------------+--------------------------------+-------------+----------+-------------+-------------+%n");
             }
-            System.out.println("+--------------+--------------+--------------+-------------+----------+-------------+");
         }
     }
+
+//    public static void main(String[] args) {
+//        IContractReposibility contractRepo = new ContractPepository();
+//        ContractService con = new ContractService(contractRepo);
+//        con.display();
+//    }
 
     public void deleteContractByID() {
         if (contracts.isEmpty()) {

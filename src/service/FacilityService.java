@@ -24,6 +24,10 @@ public class FacilityService implements IFacilityService {
         return facilitys;
     }
 
+    public FacilityService() {
+
+    }
+
     @Override
     public void display() {
         if (facilitys.isEmpty()) {
@@ -136,25 +140,26 @@ public class FacilityService implements IFacilityService {
         return null;
     }
 
-    public void count(ArrayList<Facility> facilityList) {
-        Map<String, ArrayList<Facility>> groupByService = new HashMap<>();
-
-        for (Facility x : facilityList) {
-            groupByService.computeIfAbsent(x.getFacilityID(), k -> new ArrayList<>()).add(x);
+    public ArrayList<String> count(ArrayList<Facility> list) {
+        ArrayList<String> listString = new ArrayList<>();
+        Map<String, ArrayList<Facility>> groupFacility = new HashMap<>();
+        for (Facility k : list) {
+            groupFacility.computeIfAbsent(k.getFacilityID(), h -> new ArrayList<>()).add(k);
         }
-
-        for (Map.Entry<String, ArrayList<Facility>> entry : groupByService.entrySet()) {
-            String id = entry.getKey();
-            ArrayList<Facility> sameID = entry.getValue();
-
-            System.out.println(id + ": " + sameID.size() + " students");
-
-            for (Facility student : sameID) {
-                System.out.println("  " + student);
-            }
+        for (Map.Entry<String, ArrayList<Facility>> entry : groupFacility.entrySet()) {
+            ArrayList<Facility> facilitys = entry.getValue();
+            System.out.printf("| %-12s | %-10s | %-5s | %-6s | x %d %n", facilitys.get(0).getFacilityID(), facilitys.get(0).getFacilityName(), facilitys.get(0).getQuantityMax(), facilitys.get(0).getPrices(), facilitys.size());
+            listString.add(facilitys.get(0).getFacilityID());
         }
-//        System.out.printf("| %-12s | %-10s | %-5s | %-6s |%n", a.getFacilityID(), a.getFacilityName(), a.getQuantityMax(), a.getPrices());
-
+        return listString;
+    }
+    
+    public Map<String, ArrayList<Facility>> countNum(ArrayList<Facility> list) {
+        Map<String, ArrayList<Facility>> groupFacility = new HashMap<>();
+        for (Facility k : list) {
+            groupFacility.computeIfAbsent(k.getFacilityID(), h -> new ArrayList<>()).add(k);
+        }
+        return groupFacility;
     }
 
 }

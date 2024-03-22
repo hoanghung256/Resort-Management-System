@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class BookingService implements IBookingService {
+
     private IBookingRepository bookingRepo;
     private TreeSet<Booking> bookings;
     private Queue<Booking> bookingQueue = new ConcurrentLinkedQueue<>();
@@ -37,14 +38,14 @@ public class BookingService implements IBookingService {
         if (bookings.isEmpty()) {
             System.out.println("No booking found.");
         } else {
-            System.out.println("+------------+-----------------+-----------------+-----------------+--------------+--------------+");
-            System.out.printf("| %-10s | %-15s | %-15s | %-15s | %-12s | %-12s |%n",
-                    "Booking ID", "Book date", "Start date", "End date", "Customer ID", "Service ID");
-            System.out.println("+------------+-----------------+-----------------+-----------------+--------------+--------------+");
+            System.out.println("+------------+-----------------+-----------------+-----------------+--------------+");
+            System.out.printf("| %-10s | %-15s | %-15s | %-15s | %-12s |%n",
+                    "Booking ID", "Book date", "Start date", "End date", "Customer ID");
+            System.out.println("+------------+-----------------+-----------------+-----------------+--------------+");
             for (Booking st : bookings) {
                 System.out.println(st.toString());
+                System.out.println("+------------+-----------------+-----------------+-----------------+--------------+--------------+");
             }
-            System.out.println("+------------+-----------------+-----------------+-----------------+--------------+--------------+");
         }
     }
 

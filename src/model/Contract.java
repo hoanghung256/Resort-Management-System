@@ -93,6 +93,6 @@ public class Contract {
 
     @Override
     public String toString() {
-        return String.format("| %-12s | %-12s | %-12s | %-11s | %-8s | %-11s | %-11s |", contractID, cusID,bookingID, prePayment,voucher, totalAmount, deposit);
+        return String.format("| %-12s | %-12s | %-12s | %-30s | %-11s | %-8s | %-11s | %-11s |", contractID, cusID,bookingID, book,prePayment,voucher, totalAmount, deposit);
     }
 }

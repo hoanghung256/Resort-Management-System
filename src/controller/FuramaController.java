@@ -232,9 +232,7 @@ public class FuramaController extends Menu<String> {
 
     private void runBookingManagementMenu() {
         String title = "BOOKING MANAGEMENT";
-        String[] options = {"Add new booking", "Display booking list", "Create new contract", "Display contract list",
-            "Edit contract information",
-            "Return main menu"};
+        String[] options = {"Add new booking", "Display booking list", "Display contract list", "Delete contract by ID", "Return main menu"};
         IBookingRepository bookingRepo = new BookingRepository();
         BookingService bookingService = new BookingService(bookingRepo);
         ICustomerRepository customerRepo = new CustomerRepository();
@@ -243,13 +241,13 @@ public class FuramaController extends Menu<String> {
         FacilityService facilityService = new FacilityService(facilityRepo);
         IContractReposibility contractRepo = new ContractPepository();
         ContractService contractService = new ContractService(contractRepo);
-        facilityService.display();
 
         bookingManagementMenu = new Menu<String>(title, options) {
             @Override
             public void execute(int choice) {
                 switch (choice) {
                     case 1:
+                        facilityService.display();
                         String bookID = "BK" + String.format("%04d", bookingRepo.readFile().size() + 1);
                         String contractID = "CT" + String.format("%04d", contractRepo.readFile().size() + 1);
                         //input date
@@ -282,102 +280,183 @@ public class FuramaController extends Menu<String> {
                         } while (customerService.findById(cusID) == null);
 
                         //input quantity person and money
-                        int quantityPerson = val.getAndValidInt("Input the quantity of person: ");
-                        double moneyTarget = val.getAndValidDouble("Input the money avaible: ");
                         double prePayment = 0;
-                        int extraQuantityPerson = quantityPerson;
-                        double extraMoneytarger = moneyTarget;
 
                         ArrayList<Facility> facilityList = new ArrayList<>();
                         ArrayList<Facility> list = new ArrayList<>();
                         ArrayList<Facility> exlist = new ArrayList<>();
-
-                        String type = val.getAndValidValue("Input type service you want to choose (SVVL(villa), SVHO(house), SVRO(room)): ", "^SV(VL|HO|RO)", "Invalid, enter again.");
-
-                        for (Map.Entry<Facility, Integer> entry : facilityService.getMap().entrySet()) {
-                            Facility facility = entry.getKey();
-                            if (facility.getFacilityID().startsWith(type)) {
-                                int quantityUsing = entry.getValue();
-                                int remainingCapacity = (5 - quantityUsing);
-                                if (remainingCapacity > 0) {
-                                    for (int i = 0; i < remainingCapacity; i++) {
-                                        facilityList.add(facility);
-                                        exlist.add(facility);
-                                    }
-                                }
-                            }
-                        }
-                        Collections.sort(facilityList, Comparator.comparing(Facility::getQuantityMax).reversed());
-                        Collections.sort(exlist, Comparator.comparing(Facility::getQuantityMax).reversed());
+                        ArrayList<String> listString = new ArrayList<>();
 
                         Date date1 = new Date(startDate.getYear() - 1900, startDate.getMonth() - 1, startDate.getDay()); // Lưu ý: Năm phải trừ đi 1900, tháng bắt đầu từ 0
                         Date date2 = new Date(endDate.getYear() - 1900, endDate.getMonth() - 1, endDate.getDay());
-
                         long diffInMillies = Math.abs(date2.getTime() - date1.getTime());
                         long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) + 1;
-                        ArrayList<String> listString = new ArrayList<>();
-                        do {
-                            list.clear();
-                            quantityPerson = extraQuantityPerson;
-                            moneyTarget = extraMoneytarger / diffInDays;
-                            prePayment = 0;
-                            int x = 0;
-                            for (Facility s : facilityList) {
-                                x += s.getQuantityMax();
-                            }
-                            if (x < 20) {
-                                for (Facility s : exlist) {
-                                    facilityList.add(s);
-                                }
-                            }
 
-                            int i = 0;
-                            do {
-                                if (i >= facilityList.size()) {
-                                    break;
-                                }
-                                Facility currentFacility = facilityList.get(i);
-                                if (quantityPerson < currentFacility.getQuantityMax()) {
-                                    for (int j = 0; j < facilityList.size(); j++) {
-                                        Facility a = facilityList.get(j);
-                                        if (quantityPerson >= a.getQuantityMax()) {
-                                            quantityPerson -= a.getQuantityMax();
-                                            moneyTarget -= a.getPrices();
-                                            prePayment += a.getPrices();
-                                            list.add(a);
-                                            facilityList.remove(a);
-                                            j--;
+                        System.out.println("Choose booking method:");
+                        System.out.println("1.Book according to suggestions");
+                        System.out.println("2.Book based on personal preference");
+                        int choe;
+                        do {
+                            choe = val.getAndValidInt("Input your choose: ");
+                            switch (choe) {
+                                case 1:
+                                    int quantityPerson = val.getAndValidInt("Input the quantity of person: ");
+                                    double moneyTarget = val.getAndValidDouble("Input the money avaible: ");
+                                    int extraQuantityPerson = quantityPerson;
+                                    double extraMoneytarger = moneyTarget;
+                                    String type = val.getAndValidValue("Input type service you want to choose (SVVL(villa), SVHO(house), SVRO(room)): ", "^SV(VL|HO|RO)", "Invalid, enter again.");
+
+                                    for (Map.Entry<Facility, Integer> entry : facilityService.getMap().entrySet()) {
+                                        Facility facility = entry.getKey();
+                                        if (facility.getFacilityID().startsWith(type)) {
+                                            int quantityUsing = entry.getValue();
+                                            int remainingCapacity = (5 - quantityUsing);
+                                            if (remainingCapacity > 0) {
+                                                for (int i = 0; i < remainingCapacity; i++) {
+                                                    facilityList.add(facility);
+                                                    exlist.add(facility);
+                                                }
+                                            }
                                         }
                                     }
-                                } else {
-                                    quantityPerson -= currentFacility.getQuantityMax();
-                                    moneyTarget -= currentFacility.getPrices();
-                                    prePayment += currentFacility.getPrices();
-                                    list.add(currentFacility);
-                                    facilityList.remove(currentFacility);
-                                }
-                            } while (quantityPerson > 0 && moneyTarget > 0);
+                                    Collections.sort(facilityList, Comparator.comparing(Facility::getQuantityMax).reversed());
+                                    Collections.sort(exlist, Comparator.comparing(Facility::getQuantityMax).reversed());
 
-                            Collections.sort(list, Comparator.comparing(Facility::getFacilityID));
-                            Map<String, ArrayList<Facility>> groupFacility = new HashMap<>();
-                            for (Facility k : list) {
-                                groupFacility.computeIfAbsent(k.getFacilityID(), h -> new ArrayList<>()).add(k);
-                            }
-                            for (Map.Entry<String, ArrayList<Facility>> entry : groupFacility.entrySet()) {
-                                ArrayList<Facility> facilitys = entry.getValue();
-                                System.out.printf("| %-12s | %-10s | %-5s | %-6s | x %d %n", facilitys.get(0).getFacilityID(), facilitys.get(0).getFacilityName(), facilitys.get(0).getQuantityMax(), facilitys.get(0).getPrices(), facilitys.size());
-                                listString.add(facilitys.get(0).getFacilityID());
-                            }
-//
-//                            for (Facility a : list) {
-//                                System.out.printf("| %-12s | %-10s | %-5s | %-6s |%n", a.getFacilityID(), a.getFacilityName(), a.getQuantityMax(), a.getPrices());
-//                            }
-                            System.out.printf("Total prices in 1 day: %.2f$ %n", prePayment);
+                                    do {
+                                        list.clear();
+                                        quantityPerson = extraQuantityPerson;
+                                        moneyTarget = extraMoneytarger / diffInDays;
+                                        prePayment = 0;
+                                        int x = 0;
+                                        for (Facility s : facilityList) {
+                                            x += s.getQuantityMax();
+                                        }
+                                        if (x < 20) {
+                                            for (Facility s : exlist) {
+                                                facilityList.add(s);
+                                            }
+                                        }
 
-                        } while (!val.demand("Do you agree with this suggestion (Y/N)?"));
-                        double deposit = val.getAndValidDouble("Input the deposit: ");
+                                        int i = 0;
+                                        do {
+                                            if (i >= facilityList.size()) {
+                                                break;
+                                            }
+                                            Facility currentFacility = facilityList.get(i);
+                                            if (quantityPerson < currentFacility.getQuantityMax()) {
+                                                for (int j = 0; j < facilityList.size(); j++) {
+                                                    Facility a = facilityList.get(j);
+                                                    if (quantityPerson >= a.getQuantityMax()) {
+                                                        quantityPerson -= a.getQuantityMax();
+                                                        moneyTarget -= a.getPrices();
+                                                        prePayment += a.getPrices();
+                                                        list.add(a);
+                                                        facilityList.remove(a);
+                                                        j--;
+                                                    }
+                                                }
+                                            } else {
+                                                quantityPerson -= currentFacility.getQuantityMax();
+                                                moneyTarget -= currentFacility.getPrices();
+                                                prePayment += currentFacility.getPrices();
+                                                list.add(currentFacility);
+                                                facilityList.remove(currentFacility);
+                                            }
+                                        } while (quantityPerson > 0 && moneyTarget > 0);
+                                        Collections.sort(list, Comparator.comparing(Facility::getFacilityID).reversed());
+                                        listString = facilityService.count(list);
+
+                                        System.out.printf("Total prices in 1 day: %.2f$ %n", prePayment);
+                                        System.out.printf("Total prices: %.2f$ %n", prePayment * diffInDays);
+
+                                    } while (!val.demand("Do you agree with this suggestion (Y/N)?"));
+
+                                    break;
+                                case 2:
+                                    for (Map.Entry<Facility, Integer> entry : facilityService.getMap().entrySet()) {
+                                        Facility facility = entry.getKey();
+                                        int quantityUsing = entry.getValue();
+                                        int remainingCapacity = (5 - quantityUsing);
+                                        if (remainingCapacity > 0) {
+                                            for (int i = 0; i < remainingCapacity; i++) {
+                                                facilityList.add(facility);
+                                                exlist.add(facility);
+                                            }
+                                        }
+                                    }
+                                    do {
+                                        list.clear();
+                                        int x = 0;
+                                        for (Facility s : facilityList) {
+                                            x += s.getQuantityMax();
+                                        }
+                                        if (x < 20) {
+                                            for (Facility s : exlist) {
+                                                facilityList.add(s);
+                                            }
+                                        }
+                                        int person = 0;
+                                        int i = 0;
+                                        do {
+                                            if (i >= facilityList.size()) {
+                                                break;
+                                            }
+                                            //////////
+
+                                            String serID;
+                                            do {
+                                                serID = val.getAndValidServiceCode("Enter your service ID want to book: ");
+                                                if (facilityService.findById(cusID) != null) {
+                                                    break;
+                                                }
+                                            } while (facilityService.findById(cusID) != null);
+
+                                            for (int j = 0; j < facilityList.size(); j++) {
+                                                Facility a = facilityList.get(j);
+                                                if (serID.equals(a.getFacilityID())) {
+                                                    person += a.getQuantityMax();
+                                                    prePayment += a.getPrices();
+                                                    list.add(a);
+                                                    facilityList.remove(a);
+                                                    j--;
+                                                    break;
+                                                }
+                                                ///////
+                                            }
+                                        } while (val.demand("Do you want to countinue booking (Y/N)?"));
+                                        Collections.sort(list, Comparator.comparing(Facility::getFacilityID).reversed());
+                                        listString = facilityService.count(list);
+
+                                        System.out.printf("Total prices in 1 day: %.2f$ for %d %n", prePayment, person);
+                                        System.out.printf("Total prices: %.2f$ %n", prePayment * diffInDays);
+
+                                    } while (!val.demand("Do you agree with this suggestion (Y/N)?"));
+
+                                    break;
+                                default:
+                                    System.out.println("Invalid choose.");
+                                    break;
+
+                            }
+                        } while (choe != 1 && choe != 2);
+
+                        Map<String, ArrayList<Facility>> groupFacility = facilityService.countNum(list);
+                        for (Map.Entry<String, ArrayList<Facility>> entry : groupFacility.entrySet()) {
+                            ArrayList<Facility> facilitys = entry.getValue();
+                            facilityService.getMap().put(facilitys.get(0), facilitys.size());
+                        }
 
                         double totalPrice = prePayment * diffInDays;
+
+                        double deposit;
+                        while (true) {
+                            deposit = val.getAndValidDouble("Input the deposit: ");
+                            if (deposit <= totalPrice) {
+                                break;
+                            } else {
+                                System.out.println("Invalid date range. Please enter again.");
+                            }
+                        }
 
                         Booking newBooking = new Booking(bookID, bookDate, startDate, endDate, cusID);
                         bookingService.add(newBooking);
@@ -388,26 +467,19 @@ public class FuramaController extends Menu<String> {
                         System.out.println("Add new Booking successfully!");
 
                         break;
+
                     case 2:
                         bookingService.display();
                         break;
                     case 3:
-                        bookingService.createNewContract();
-                        break;
-//                    case 3:
-//                        bookingService.createNewContract();
-//                        break;
-                    case 4:
                         contractService.display();
                         break;
-                    case 5:
+                    case 4:
                         contractService.display();
                         contractService.deleteContractByID();
                         contractService.save();
                         break;
-                    case 6:
-                        contractService.save();
-                        bookingService.save();
+                    case 5:
                         return;
                 }
 
@@ -448,13 +520,13 @@ public class FuramaController extends Menu<String> {
                         break;
                     case 2:
                         ArrayList<Booking> arrayDate = new ArrayList<>();
-                        TreeSet<Promotion> arrayPromo = promotionRepo.readFile(); 
+                        TreeSet<Promotion> arrayPromo = promotionRepo.readFile();
 
                         for (Booking b : bookingRepo.readFile()) {
                             boolean hasPromo = false;
                             for (Promotion p : arrayPromo) {
                                 if (b.getBookingID().equalsIgnoreCase(p.getVoucher().getBookingID())) {
-                                    hasPromo = true; 
+                                    hasPromo = true;
                                     break;
                                 }
                             }
